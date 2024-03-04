@@ -1,4 +1,4 @@
-package main
+package pkg
 
 import (
 	"fmt"
@@ -8,16 +8,19 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func ReadLogFile() error {
+func GetEnvStatus() (string, error) {
 	if err := godotenv.Load(); err != nil {
 		log.Print("No .env file found")
-		return err
+		return "Error", fmt.Errorf("no .env file found")
 	}
 	path, exists := os.LookupEnv("BASE_LOG_PATH")
 
 	if exists {
-		fmt.Println(path)
+		return path, nil
 	}
-	return nil
+	return "No path found", nil
+}
+
+func ReadLogFile() {
 
 }
