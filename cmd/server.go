@@ -11,11 +11,17 @@ import (
 
 func main() {
 
-	fileMessage, err := pkg.GetEnvStatus()
+	filePath, err := pkg.GetEnvStatus()
 	if err != nil {
 		fmt.Println(err)
 	}
-	component := views.Hello("John", fileMessage)
+	rawData, writeErr := pkg.ReadLogFile(filePath)
+	var component templ.Component
+	if writeErr != nil {
+		component = views.Hello("John", filePath, string(writeErr.Error()))
+	} else {
+		component = views.Hello("John", filePath, rawData)
+	}
 	http.Handle("/", templ.Handler(component))
 
 	fmt.Println("Listening on :3000")
