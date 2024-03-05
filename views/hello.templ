@@ -1,9 +1,41 @@
 package views
 
-templ Hello(name string, fileStatus string) {
+css header() {
+	color: lightblue;
+	font-size: 5rem;
+	font-weight: bold;
+	text-align: center;
+}
+
+css hr() {
+	border-top: 1px solid black;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+css main() {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	padding: 1rem;
+}
+
+css bold() {
+	font-weight: bold;
+}
+
+templ Hello(name string, fileStatus string, rawData string) {
 	<header>
-		<div>Hello, { name } Welcome to MyRotary Analytics</div>
-		<hr/>
-		<div>Log file status: { fileStatus }</div>
+		<div class={ header() }>Hello, { name } Welcome to MyRotary Analytics</div>
 	</header>
+	<hr class={ hr() }/>
+	<div class={ main() }>
+		<div><span class={ bold() }>File Status:</span> { fileStatus }</div>
+		<div>
+			<span class={ bold() }>Raw data:</span>
+			{ rawData }
+		</div>
+	</div>
 }
