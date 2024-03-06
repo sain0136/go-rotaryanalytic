@@ -1,5 +1,9 @@
 package views
 
+import (
+	"github.com/sain0136/go-rotaryanalytic/pkg"
+)
+
 css header() {
 	color: lightblue;
 	font-size: 5rem;
@@ -26,7 +30,7 @@ css bold() {
 	font-weight: bold;
 }
 
-templ Hello(name string, fileStatus string, rawData string) {
+templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog ) {
 	<header>
 		<div class={ header() }>Hello, { name } Welcome to MyRotary Analytics</div>
 	</header>
@@ -35,7 +39,15 @@ templ Hello(name string, fileStatus string, rawData string) {
 		<div><span class={ bold() }>File Status:</span> { fileStatus }</div>
 		<div>
 			<span class={ bold() }>Raw data:</span>
-			{ rawData }
+			if LogEntries == nil {
+				<span>Error: LogEntries could not be processed</span>
+			} else {
+				<ul>
+					for _, entry := range LogEntries {
+						<li>{ entry.String() }</li>
+					}
+				</ul>
+			}
 		</div>
 	</div>
 }

@@ -10,17 +10,16 @@ import (
 )
 
 func main() {
-
 	filePath, err := pkg.GetEnvStatus()
 	if err != nil {
 		fmt.Println(err)
 	}
-	rawData, writeErr := pkg.ReadLogFile(filePath)
+	rawLogEntries, writeErr := pkg.ReadLogFile(filePath)
 	var component templ.Component
 	if writeErr != nil {
-		component = views.Hello("John", filePath, string(writeErr.Error()))
+		component = views.Hello("John", filePath, nil)
 	} else {
-		component = views.Hello("John", filePath, rawData)
+		component = views.Hello("John", filePath, rawLogEntries)
 	}
 	http.Handle("/", templ.Handler(component))
 
