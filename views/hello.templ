@@ -4,11 +4,28 @@ import (
 	"github.com/sain0136/go-rotaryanalytic/pkg"
 )
 
+css body() {
+	background-color: white;
+}
+
 css header() {
-	color: lightblue;
-	font-size: 5rem;
+	color: black;
+	font-size: 3rem;
 	font-weight: bold;
 	text-align: center;
+}
+
+css table() {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+css th() {
+	background-color: lightblue;
+	font-weight: bold;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
 }
 
 css hr() {
@@ -30,24 +47,88 @@ css bold() {
 	font-weight: bold;
 }
 
-templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog ) {
-	<header>
-		<div class={ header() }>Hello, { name } Welcome to MyRotary Analytics</div>
-	</header>
-	<hr class={ hr() }/>
-	<div class={ main() }>
-		<div><span class={ bold() }>File Status:</span> { fileStatus }</div>
-		<div>
-			<span class={ bold() }>Raw data:</span>
-			if LogEntries == nil {
-				<span>Error: LogEntries could not be processed</span>
-			} else {
-				<ul>
-					for _, entry := range LogEntries {
-						<li>{ entry.String() }</li>
+css button() {
+	background-color: lightblue;
+	border: none;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 1rem;
+	border-radius: 12px;
+	cursor: pointer;
+}
+
+templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog) {
+	<style type="text/css">
+
+	.trow:hover {
+		background-color: #ddd;
+		cursor: pointer;
+	}
+
+	#table td, #table th {
+ 	 border: 1px solid #ddd;
+ 	 padding: 8px;
+	}
+
+	</style>
+
+	<script type="text/javascript">
+    	function handleRefresh(Message) {
+      	console.log(Message);
+	  	location.reload();
+    }
+  </script>
+	<html>
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>MyRotary Analytics</title>
+		</head>
+		<body class={ body() }>
+			<header>
+				<div class={ header() }>Hello, { name } Welcome to MyRotary Analytics</div>
+			</header>
+			<button class={ button() } onclick="handleRefresh('Refreshing')">Refresh</button>
+			<hr class={ hr() }/>
+			<div class={ main() }>
+				<div><span class={ bold() }>File Status:</span> { fileStatus }</div>
+				<div>
+					<span class={ bold() }>Raw data:</span>
+					if LogEntries == nil {
+						<span>Error: LogEntries could not be processed</span>
+					} else {
+						<table id="table">
+							<thead>
+								<tr class={ th() }>
+									<th colspan="1">Id</th>
+									<th colspan="1">Timestamp</th>
+									<th colspan="1">Type</th>
+									<th colspan="1">Event</th>
+									<th colspan="1">Status</th>
+									<th colspan="1">Source</th>
+									<th colspan="1">Message</th>
+								</tr>
+							</thead>
+							<tbody id="tableBody">
+								for _, entry := range LogEntries {
+									<tr class="trow">
+										<td>{ entry.UniqueId }</td>
+										<td>{ entry.TimeStamp }</td>
+										<td>{ entry.Type }</td>
+										<td>{ entry.Event }</td>
+										<td>{ entry.Status }</td>
+										<td>{ entry.Source }</td>
+										<td>{ entry.Message }</td>
+									</tr>
+								}
+							</tbody>
+						</table>
 					}
-				</ul>
-			}
-		</div>
-	</div>
+				</div>
+			</div>
+		</body>
+	</html>
 }
