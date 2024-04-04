@@ -6,8 +6,11 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
+	"runtime"
 
 	"github.com/joho/godotenv"
+	"github.com/sain0136/go-rotaryanalytic/utils"
 )
 
 type LogEntry struct {
@@ -60,7 +63,20 @@ type User struct {
 }
 
 func GetEnvStatus() (string, error) {
-	if err := godotenv.Load("../.env"); err != nil {
+	_, filename, _, ok := runtime.Caller(0)
+	if !ok {
+		log.Print("Failed to get current file path")
+		return "Error", fmt.Errorf("failed to get current file path")
+	}
+
+	dir := filepath.Dir(filename)                              // get the directory of the current file
+	abs, err := filepath.Abs(filepath.Join(dir, "..", ".env")) // get the absolute path to the .env file
+	if err != nil {
+		log.Print("Failed to resolve absolute path to .env file")
+		return "Error", fmt.Errorf("failed to resolve absolute path to .env file: %v", err)
+	}
+
+	if err := godotenv.Load(abs); err != nil {
 		log.Print("No .env file found")
 		return "Error", fmt.Errorf("no .env file found")
 	}
@@ -106,5 +122,6 @@ func marshalLogs(logs []string) ([]RotaryLog, error) {
 		}
 		entries = append(entries, entry.RotaryLog)
 	}
-	return entries, nil
+	reversed := utils.ReverseSlice(entries)
+	return reversed, nil
 }
