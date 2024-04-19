@@ -18,18 +18,38 @@ jobs:
           chmod 600 id_rsa
           ssh-keyscan -t rsa ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
           
+      on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          touch ~/.ssh/known_hosts
+          echo "${{ secrets.SSH_KEY }}" > id_rsa
+          chmod 600 id_rsa
+          ssh-keyscan -t rsa ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+          
       - name: Deploy RotaryAnalytics
         run: |
-          ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} <<'ENDSSH'
+          ssh -i id_rsa ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} <<'ENDSSH'
             echo "Connected"
-            cd /home/servicehost/go-rotaryanalytic
+            cd  /home/servicehost/go-rotaryanalytic 
             git stash
-            git pull
-            cd /home/servicehost/go-rotaryanalytic/cmd
-            export PATH=\$PATH:/usr/local/go/bin  # Escape $ to prevent local expansion
+            git pull 
+            cd  /home/servicehost/go-rotaryanalytic/cmd
+            export PATH=$PATH:/usr/local/go/bin
             go version
-            rm -rf rotaryAnalytics  # Use -rf to force removal and handle directories
+            rm -r rotaryAnalytics
             go build -o rotaryAnalytics
             sudo systemctl restart rotaryanalytic.service
             sudo systemctl status rotaryanalytic.service
-            '  # This should match exactly with the delimiter used after << without any quotes
+           '
