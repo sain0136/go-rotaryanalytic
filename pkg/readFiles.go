@@ -69,13 +69,14 @@ func GetEnvStatus() (string, error) {
 		return "Error", fmt.Errorf("failed to get current file path")
 	}
 
-	dir := filepath.Dir(filename)                              // get the directory of the current file
+	dir := filepath.Dir(filename) // get the directory of the current file
+	log.Print("Current file path: ", dir)
 	abs, err := filepath.Abs(filepath.Join(dir, "..", ".env")) // get the absolute path to the .env file
 	if err != nil {
 		log.Print("Failed to resolve absolute path to .env file")
 		return "Error", fmt.Errorf("failed to resolve absolute path to .env file: %v", err)
 	}
-
+	log.Print("Found .env file at: ", abs)
 	if err := godotenv.Load(abs); err != nil {
 		log.Print("No .env file found")
 		return "Error", fmt.Errorf("no .env file found")
