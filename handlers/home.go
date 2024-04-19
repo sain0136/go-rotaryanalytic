@@ -19,9 +19,9 @@ func HomeHandler() http.Handler {
 		rawLogEntries, writeErr := pkg.ReadLogFile(filePath)
 		var component templ.Component
 		if writeErr != nil {
-			component = views.Hello("Peter", filePath, nil)
+			component = views.Hello("Peter Labelle", filePath, nil)
 		} else {
-			component = views.Hello("Peter", filePath, rawLogEntries)
+			component = views.Hello("Peter Labelle", filePath, rawLogEntries)
 		}
 		templ.Handler(component).ServeHTTP(w, r)
 	})
