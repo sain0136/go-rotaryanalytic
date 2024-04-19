@@ -26,4 +26,4 @@ jobs:
             git stash
             git pull 
             cd /home/servicehost/go-rotaryanalytic/cmd
-            '
+          ENDSSH
