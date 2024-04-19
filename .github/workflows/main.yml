@@ -28,7 +28,7 @@ jobs:
             cd  /home/servicehost/go-rotaryanalytic/cmd
             
             rm -r rotaryAnalytics
-            go build -o rotaryAnalytics
+            go version
             sudo systemctl restart rotaryanalytic.service
             sudo systemctl status rotaryanalytic.service
             '
