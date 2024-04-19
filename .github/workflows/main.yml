@@ -28,8 +28,8 @@ jobs:
             cd  /home/servicehost/go-rotaryanalytic/cmd
             export PATH=$PATH:/usr/local/go/bin
             go version
-            rm -r rotaryAnalytics
+            rm -rf rotaryAnalytics  # Use -rf to force removal and handle directories
             go build -o rotaryAnalytics
-            systemctl restart rotaryanalytic.service
-            systemctl status rotaryanalytic.service
+            sudo systemctl restart rotaryanalytic.service
+            sudo systemctl status rotaryanalytic.service
            '
