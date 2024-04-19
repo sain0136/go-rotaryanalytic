@@ -36,6 +36,6 @@ jobs:
             go version
             rm -r rotaryAnalytics
             go build -o rotaryAnalytics
-            sudo systemctl restart rotaryanalytic.service
-            sudo systemctl status rotaryanalytic.service
+            systemctl restart rotaryanalytic.service
+            systemctl status rotaryanalytic.service
           ENDSSH
