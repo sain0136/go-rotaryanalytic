@@ -20,16 +20,16 @@ jobs:
 
       - name: Deploy RotaryAnalytics
         run: |
-          ssh -i id_rsa ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} <<'ENDSSH'
+          ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} <<'ENDSSH'
             echo "Connected"
-            cd  /home/servicehost/go-rotaryanalytic 
+            cd /home/servicehost/go-rotaryanalytic
             git stash
-            git pull 
-            cd  /home/servicehost/go-rotaryanalytic/cmd
-            export PATH=$PATH:/usr/local/go/bin
+            git pull
+            cd /home/servicehost/go-rotaryanalytic/cmd
+            export PATH=\$PATH:/usr/local/go/bin  # Escape $ to prevent local expansion
             go version
             rm -rf rotaryAnalytics  # Use -rf to force removal and handle directories
             go build -o rotaryAnalytics
             sudo systemctl restart rotaryanalytic.service
             sudo systemctl status rotaryanalytic.service
-           '
+          ENDSSH  # This should match exactly with the delimiter used after << without any quotes
