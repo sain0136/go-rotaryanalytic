@@ -26,6 +26,7 @@ jobs:
             git stash
             git pull 
             cd  /home/servicehost/go-rotaryanalytic/cmd
+            
             rm -r rotaryAnalytics
             go build -o rotaryAnalytics
             sudo systemctl restart rotaryanalytic.service
