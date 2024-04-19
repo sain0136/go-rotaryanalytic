@@ -26,7 +26,7 @@ jobs:
             git stash
             git pull 
             cd /home/servicehost/go-rotaryanalytic/cmd
-            export PATH=\$PATH:/usr/local/go/bin
-            go version
+            rm -r rotaryAnalytics
+            /usr/local/go/bin/go build -o rotaryanalytic
             sudo systemctl restart rotaryanalytic.service
           ENDSSH
