@@ -24,7 +24,7 @@ jobs:
             echo "hi"
             cd  /home/servicehost/go-rotaryanalytic 
             git stash
-            git pull https://sain0136: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@github.com:sain0136/myrotary-projects.git main
+            git pull 
             cd  /home/servicehost/go-rotaryanalytic/cmd
             rm -r rotaryAnalytics
             go build -o rotaryAnalytics
