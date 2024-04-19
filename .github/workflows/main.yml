@@ -21,7 +21,7 @@ jobs:
       - name: Deploy Rotary
         run: |
           ssh -i id_rsa ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} <<'ENDSSH'
-            echo "hi"
+            echo "Connected"
             cd  /home/servicehost/go-rotaryanalytic 
             git stash
             git pull 
