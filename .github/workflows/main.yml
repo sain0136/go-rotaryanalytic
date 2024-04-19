@@ -24,18 +24,18 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -t rsa ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
-      - name: Deploy Rotary
+      - name: Deploy RotaryAnalytics
         run: |
-          ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} 'bash -l -c "
-            echo \"Connected\"
-            cd /home/servicehost/go-rotaryanalytic 
+          ssh -i id_rsa ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} <<'ENDSSH'
+            echo "Connected"
+            cd  /home/servicehost/go-rotaryanalytic 
             git stash
             git pull 
-            cd /home/servicehost/go-rotaryanalytic/cmd
-            
-            # Check Go version and build the application
+            cd  /home/servicehost/go-rotaryanalytic/cmd
+            echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+            source ~/.bashrc
+            rm -r rotaryAnalytics
             go version
-            go build -o rotaryAnalytics
             sudo systemctl restart rotaryanalytic.service
             sudo systemctl status rotaryanalytic.service
-          "'
+            '
