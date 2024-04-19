@@ -38,4 +38,4 @@ jobs:
             go build -o rotaryAnalytics
             sudo systemctl restart rotaryanalytic.service
             sudo systemctl status rotaryanalytic.service
-            '
+            ENDSSH
