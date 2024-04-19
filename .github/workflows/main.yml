@@ -35,7 +35,7 @@ jobs:
             export PATH=$PATH:/usr/local/go/bin
             go version
             rm -r rotaryAnalytics
-            go version
+            go build -o rotaryAnalytics
             sudo systemctl restart rotaryanalytic.service
             sudo systemctl status rotaryanalytic.service
             '
