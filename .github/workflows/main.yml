@@ -26,19 +26,16 @@ jobs:
 
       - name: Deploy Rotary
         run: |
-          ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} <<'ENDSSH'
-            echo "Connected"
+          ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} 'bash -l -c "
+            echo \"Connected\"
             cd /home/servicehost/go-rotaryanalytic 
             git stash
             git pull 
             cd /home/servicehost/go-rotaryanalytic/cmd
             
-            # Assuming you need to build the Go application
-            rm -f rotaryAnalytics  # Remove old executable if needed before moving new one
-            go build -o rotaryAnalytics
-            
-            # Handling the Go version check and application restart
+            # Check Go version and build the application
             go version
+            go build -o rotaryAnalytics
             sudo systemctl restart rotaryanalytic.service
             sudo systemctl status rotaryanalytic.service
-          ENDSSH
+          "'
