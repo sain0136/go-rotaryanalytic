@@ -27,6 +27,7 @@ jobs:
             git pull #public repo so i can do this directly without PAT token
             cd /home/servicehost/go-rotaryanalytic/cmd
             rm -rf rotaryanalytic
+            cp /home/servicehost/productionfiles/analytics/.env /home/servicehost/go-rotaryanalytic/
             /usr/local/go/bin/go build -o rotaryanalytic
             sudo systemctl restart rotaryanalytic.service
           ENDSSH
