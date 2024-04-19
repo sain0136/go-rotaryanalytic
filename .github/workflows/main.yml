@@ -1,3 +1,5 @@
+name: Go Deployment Workflow
+
 on:
   push:
     branches:
@@ -8,27 +10,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: '1.22.2'  # Specify the Go version to match your local development
 
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          touch ~/.ssh/known_hosts
-          echo "${{ secrets.SSH_KEY }}" > id_rsa
-          chmod 600 id_rsa
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -t rsa ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
       - name: Deploy Rotary
         run: |
-          ssh -i id_rsa ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} <<'ENDSSH'
+          ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} <<'ENDSSH'
             echo "Connected"
-            cd  /home/servicehost/go-rotaryanalytic 
+            cd /home/servicehost/go-rotaryanalytic 
             git stash
             git pull 
-            cd  /home/servicehost/go-rotaryanalytic/cmd
+            cd /home/servicehost/go-rotaryanalytic/cmd
             
-            rm -r rotaryAnalytics
+            # Assuming you need to build the Go application
+            rm -f rotaryAnalytics  # Remove old executable if needed before moving new one
+            go build -o rotaryAnalytics
+            
+            # Handling the Go version check and application restart
             go version
             sudo systemctl restart rotaryanalytic.service
             sudo systemctl status rotaryanalytic.service
-            '
+          ENDSSH
