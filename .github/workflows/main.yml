@@ -32,4 +32,4 @@ jobs:
             go build -o rotaryAnalytics
             sudo systemctl restart rotaryanalytic.service
             sudo systemctl status rotaryanalytic.service
-          ENDSSH  # This should match exactly with the delimiter used after << without any quotes
+            '  # This should match exactly with the delimiter used after << without any quotes
