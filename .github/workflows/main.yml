@@ -20,17 +20,15 @@ jobs:
           
       - name: Deploy RotaryAnalytics
         run: |
-          ssh -i id_rsa ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} 'bash -s' <<'ENDSSH'
+          ssh -i id_rsa ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} <<'ENDSSH'
             echo "Connected"
             cd /home/servicehost/go-rotaryanalytic 
             git stash
             git pull 
             cd /home/servicehost/go-rotaryanalytic/cmd
-            # Temporarily fix the PATH to include typical directories where rm and sudo reside
-            export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:\$PATH
+            export PATH=\$PATH:/usr/local/go/bin
             go version
             rm -r rotaryAnalytics
             go build -o rotaryAnalytics
             sudo systemctl restart rotaryanalytic.service
-            sudo systemctl status rotaryanalytic.service
           ENDSSH
