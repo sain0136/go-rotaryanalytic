@@ -26,4 +26,5 @@ jobs:
             git stash
             git pull 
             cd /home/servicehost/go-rotaryanalytic/cmd
+            sudo systemctl restart rotaryanalytic.service
           ENDSSH
