@@ -15,10 +15,10 @@ css header() {
 	text-align: center;
 }
 
-css table() {
-	border-collapse: collapse;
-	width: 100%;
-}
+// css table() {
+// 	border-collapse: collapse;
+// 	width: 100%;
+// }
 
 css th() {
 	background-color: lightblue;
@@ -59,9 +59,100 @@ css button() {
 	border-radius: 12px;
 	cursor: pointer;
 }
-templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog) {
-	<style type="text/css">
 
+css subheader() {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	padding: 1rem;
+	align-items: center;
+}
+
+css sessionsTab() {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	padding: 1rem;
+}
+
+script handleRefresh() {
+	location.reload();
+}
+
+script onWindowLoad(mode string) {
+	 const params = new URLSearchParams(window.location.search);
+ 	 if (!params.has('user')) {
+		if (mode == "DEV") {
+			window.location.replace("http://localhost:3000/login");
+		} else {
+			window.location.replace("https://analytics.myrotaryprojects.org/login");
+		}
+	}
+}
+
+templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode string) {
+	<style type="text/css">
+	@media (max-width: 600px) {
+	#subheader {
+      flex-direction: column;
+	  gap: 1rem;
+    }
+	}
+	</style>
+	<script type="text/javascript">
+
+  	</script>
+	<html>
+		<head>
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/light.css"/>
+			<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js"></script>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>MyRotary Analytics</title>
+		</head>
+		<body onload={ onWindowLoad(mode) } class={ body() }>
+			<header>
+				<div class={ header() }>Myrotaryprojects.org Analytics </div>
+				<sl-divider style="--color: lightblue;"></sl-divider>
+				<div id="subheader" class={ subheader() }>
+					<p>
+						User: { name }
+					</p>
+					<div>Mode: { mode }</div>
+					<sl-button variant="primary" onClick={ handleRefresh() }>Reload</sl-button>
+				</div>
+				<sl-divider style="--color: lightblue;"></sl-divider>
+			</header>
+			<div class={ main() }>
+				<div><span class={ bold() }>File Status:</span> { fileStatus }</div>
+				<sl-tab-group>
+					<sl-tab slot="nav" panel="logs">Rotary Logs</sl-tab>
+					<sl-tab slot="nav" panel="sessions">Sessions</sl-tab>
+					<sl-tab-panel name="logs">
+						@table(LogEntries)
+					</sl-tab-panel>
+					<sl-tab-panel name="sessions">Under Construction</sl-tab-panel>
+				</sl-tab-group>
+			</div>
+		</body>
+	</html>
+}
+
+templ table(LogEntries []pkg.RotaryLog) {
+	<style type="text/css">
+	@media (max-width: 900px) {
+	.column-to-hide {
+      display: none;
+    }
+	}
+	@media (max-width: 600px) {
+	.column-to-hide-mobile {
+	  display: none;
+	}
+	}
 	.trow:hover {
 		background-color: #ddd;
 		cursor: pointer;
@@ -71,63 +162,38 @@ templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog) {
  	 border: 1px solid #ddd;
  	 padding: 8px;
 	}
-
 	</style>
-
-	<script type="text/javascript">
-    	function handleRefresh(Message) {
-      	console.log(Message);
-	  	location.reload();
-    }
-  </script>
-	<html>
-		<head>
-			<meta charset="UTF-8"/>
-			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<title>MyRotary Analytics</title>
-		</head>
-		<body class={ body() }>
-			<header>
-				<div class={ header() }>Hello, { name } Welcome to MyRotary Analytics</div>
-			</header>
-			<button class={ button() } onclick="handleRefresh('Refreshing')">Refresh</button>
-			<hr class={ hr() }/>
-			<div class={ main() }>
-				<div><span class={ bold() }>File Status:</span> { fileStatus }</div>
-				<div>
-					<span class={ bold() }>Raw data:</span>
-					if LogEntries == nil {
-						<span>Error: LogEntries could not be processed</span>
-					} else {
-						<table id="table">
-							<thead>
-								<tr class={ th() }>
-									<th colspan="1">Id</th>
-									<th colspan="1">Timestamp</th>
-									<th colspan="1">Type</th>
-									<th colspan="1">Event</th>
-									<th colspan="1">Status</th>
-									<th colspan="1">Source</th>
-									<th colspan="1">Message</th>
-								</tr>
-							</thead>
-							<tbody id="tableBody">
-								for _, entry := range LogEntries {
-									<tr class="trow">
-										<td>{ entry.UniqueId }</td>
-										<td>{ entry.TimeStamp }</td>
-										<td>{ entry.Type }</td>
-										<td>{ entry.Event }</td>
-										<td>{ entry.Status }</td>
-										<td>{ entry.Source }</td>
-										<td>{ entry.Message }</td>
-									</tr>
-								}
-							</tbody>
-						</table>
+	<div>
+		<span class={ bold() }>Raw Logs:</span>
+		if LogEntries == nil {
+			<span>Error: LogEntries could not be processed</span>
+		} else {
+			<table id="table">
+				<thead>
+					<tr class={ th() }>
+						<th class="column-to-hide" colspan="1">Id</th>
+						<th class="column-to-hide-mobile" colspan="1">Timestamp</th>
+						<th colspan="1">Type</th>
+						<th colspan="1">Event</th>
+						<th colspan="1">Status</th>
+						<th colspan="1">Source</th>
+						<th class="column-to-hide" colspan="1">Message</th>
+					</tr>
+				</thead>
+				<tbody id="tableBody">
+					for _, entry := range LogEntries {
+						<tr class="trow">
+							<td class="column-to-hide">{ entry.UniqueId }</td>
+							<td class="column-to-hide-mobile">{ entry.TimeStamp }</td>
+							<td>{ entry.Type }</td>
+							<td>{ entry.Event }</td>
+							<td>{ entry.Status }</td>
+							<td>{ entry.Source }</td>
+							<td class="column-to-hide">{ entry.Message }</td>
+						</tr>
 					}
-				</div>
-			</div>
-		</body>
-	</html>
+				</tbody>
+			</table>
+		}
+	</div>
 }
