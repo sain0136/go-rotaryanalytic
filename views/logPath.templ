@@ -5,6 +5,9 @@ templ LogPath( fileStatus string) {
     span {
         font-weight: bold;
     }
+    .container {
+        padding-right: 5rem;
+    }
     </style>
-	<div><span>File Status:</span> { fileStatus }</div>
+	<div id="fileStatus" class="container"><span>File Status:</span> { fileStatus }</div>
 }
