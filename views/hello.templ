@@ -15,11 +15,6 @@ css header() {
 	text-align: center;
 }
 
-// css table() {
-// 	border-collapse: collapse;
-// 	width: 100%;
-// }
-
 css th() {
 	background-color: lightblue;
 	font-weight: bold;
@@ -78,10 +73,6 @@ css sessionsTab() {
 	padding: 1rem;
 }
 
-script handleRefresh() {
-	location.reload();
-}
-
 script onWindowLoad(mode string) {
 	 const params = new URLSearchParams(window.location.search);
  	 if (!params.has('user')) {
@@ -101,6 +92,10 @@ templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode str
 	  gap: 1rem;
     }
 	}
+	img {
+		height: 50px;
+		width: 50px;
+	}
 	</style>
 	<script type="text/javascript">
 
@@ -109,6 +104,7 @@ templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode str
 		<head>
 			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/light.css"/>
 			<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js"></script>
+			<script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<title>MyRotary Analytics</title>
@@ -122,7 +118,11 @@ templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode str
 						User: { name }
 					</p>
 					<div>Mode: { mode }</div>
-					<sl-button variant="primary" onClick={ handleRefresh() }>Reload</sl-button>
+					<div>
+						<sl-button variant="primary"  hx-headers='{"Cache-Control":"no-cache"}' hx-get="/logs" hx-target="#tableContainer">
+							Reload
+						</sl-button>
+					</div>
 				</div>
 				<sl-divider style="--color: lightblue;"></sl-divider>
 			</header>
@@ -132,7 +132,7 @@ templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode str
 					<sl-tab slot="nav" panel="logs">Rotary Logs</sl-tab>
 					<sl-tab slot="nav" panel="sessions">Sessions</sl-tab>
 					<sl-tab-panel name="logs">
-						@table(LogEntries)
+						@Table(LogEntries)
 					</sl-tab-panel>
 					<sl-tab-panel name="sessions">Under Construction</sl-tab-panel>
 				</sl-tab-group>
@@ -141,7 +141,7 @@ templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode str
 	</html>
 }
 
-templ table(LogEntries []pkg.RotaryLog) {
+templ Table(LogEntries []pkg.RotaryLog) {
 	<style type="text/css">
 	@media (max-width: 900px) {
 	.column-to-hide {
@@ -163,7 +163,7 @@ templ table(LogEntries []pkg.RotaryLog) {
  	 padding: 8px;
 	}
 	</style>
-	<div>
+	<div id="tableContainer">
 		<span class={ bold() }>Raw Logs:</span>
 		if LogEntries == nil {
 			<span>Error: LogEntries could not be processed</span>

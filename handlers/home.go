@@ -33,3 +33,21 @@ func LoginPageHandler(mode string) http.Handler {
 		templ.Handler(component).ServeHTTP(w, r)
 	})
 }
+
+func LogsTable(w http.ResponseWriter, r *http.Request) http.Handler {
+	filePath, err := pkg.GetEnvStatus()
+	if err != nil {
+		fmt.Println(err)
+	}
+	rawLogEntries, writeErr := pkg.ReadLogFile(filePath)
+
+	var component templ.Component
+	if writeErr != nil {
+		component = views.LogTable(nil)
+	} else {
+		component = views.LogTable(rawLogEntries)
+	}
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		templ.Handler(component).ServeHTTP(w, r)
+	})
+}

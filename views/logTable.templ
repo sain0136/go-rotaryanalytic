@@ -1,0 +1,74 @@
+package views
+
+import (
+	"github.com/sain0136/go-rotaryanalytic/pkg"
+)
+
+css thClass() {
+	background-color: lightblue;
+	font-weight: bold;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
+}
+
+css boldClass() {
+	font-weight: bold;
+}
+
+templ LogTable(LogEntries []pkg.RotaryLog) {
+	<style type="text/css">
+	@media (max-width: 900px) {
+	.column-to-hide {
+      display: none;
+    }
+	}
+	@media (max-width: 600px) {
+	.column-to-hide-mobile {
+	  display: none;
+	}
+	}
+	.trow:hover {
+		background-color: #ddd;
+		cursor: pointer;
+	}
+
+	#table td, #table th {
+ 	 border: 1px solid #ddd;
+ 	 padding: 8px;
+	}
+	</style>
+	<div id="tableContainer">
+		<span class={ boldClass() }>Raw Logs:</span>
+		if LogEntries == nil {
+			<span>Error: LogEntries could not be processed</span>
+		} else {
+			<table id="table">
+				<thead>
+					<tr class={ thClass() }>
+						<th class="column-to-hide" colspan="1">Id</th>
+						<th class="column-to-hide-mobile" colspan="1">Timestamp</th>
+						<th colspan="1">Type</th>
+						<th colspan="1">Event</th>
+						<th colspan="1">Status</th>
+						<th colspan="1">Source</th>
+						<th class="column-to-hide" colspan="1">Message</th>
+					</tr>
+				</thead>
+				<tbody id="tableBody">
+					for _, entry := range LogEntries {
+						<tr class="trow">
+							<td class="column-to-hide">{ entry.UniqueId }</td>
+							<td class="column-to-hide-mobile">{ entry.TimeStamp }</td>
+							<td>{ entry.Type }</td>
+							<td>{ entry.Event }</td>
+							<td>{ entry.Status }</td>
+							<td>{ entry.Source }</td>
+							<td class="column-to-hide">{ entry.Message }</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		}
+	</div>
+}
