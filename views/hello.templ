@@ -119,7 +119,7 @@ templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode str
 					</p>
 					<div>Mode: { mode }</div>
 					<div>
-						<sl-button variant="primary"  hx-headers='{"Cache-Control":"no-cache"}' hx-get="/logs" hx-target="#tableContainer">
+						<sl-button variant="primary" hx-headers='{"Cache-Control":"no-cache"}' hx-get="/logs" hx-target="#tableContainer">
 							Reload
 						</sl-button>
 					</div>
@@ -127,7 +127,11 @@ templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode str
 				<sl-divider style="--color: lightblue;"></sl-divider>
 			</header>
 			<div class={ main() }>
-				<div><span class={ bold() }>File Status:</span> { fileStatus }</div>
+				<div id="fileStatus">
+					<sl-button variant="primary" hx-get="/getLogsPath" hx-target="#fileStatus">
+						Show File Status
+					</sl-button>
+				</div>
 				<sl-tab-group>
 					<sl-tab slot="nav" panel="logs">Rotary Logs</sl-tab>
 					<sl-tab slot="nav" panel="sessions">Sessions</sl-tab>

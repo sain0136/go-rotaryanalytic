@@ -51,3 +51,17 @@ func LogsTable(w http.ResponseWriter, r *http.Request) http.Handler {
 		templ.Handler(component).ServeHTTP(w, r)
 	})
 }
+
+func GetLogsPath(w http.ResponseWriter, r *http.Request) http.Handler {
+	filePath, err := pkg.GetEnvStatus()
+	var path string
+	if err != nil {
+		path = "Logs was not found"
+	} else {
+		path = fmt.Sprintf("Logs found at: %s", filePath)
+	}
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		component := views.LogPath(path)
+		templ.Handler(component).ServeHTTP(w, r)
+	})
+}
