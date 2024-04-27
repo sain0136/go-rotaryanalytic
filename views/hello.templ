@@ -6,11 +6,12 @@ import (
 
 css body() {
 	background-color: white;
+	margin: 0;
 }
 
-css header() {
+css title() {
 	color: black;
-	font-size: 3rem;
+	font-size: 1.5rem;
 	font-weight: bold;
 	text-align: center;
 }
@@ -21,12 +22,6 @@ css th() {
 	padding-top: 12px;
 	padding-bottom: 12px;
 	text-align: left;
-}
-
-css hr() {
-	border-top: 1px solid black;
-	margin-top: 1rem;
-	margin-bottom: 1rem;
 }
 
 css main() {
@@ -84,21 +79,65 @@ script onWindowLoad(mode string) {
 	}
 }
 
+// <div id="subheader" class={ subheader() }>
+// 	<p>
+// 		User: { name }
+// 	</p>
+// 	<div>Mode: { mode }</div>
+// </div>
+// @media (max-width: 600px) {
+// #subheader {
+//   flex-direction: column;
+//   gap: 1rem;
+// }
+// }
 templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode string) {
 	<style type="text/css">
-	@media (max-width: 600px) {
-	#subheader {
-      flex-direction: column;
-	  gap: 1rem;
-    }
-	}
 	img {
 		height: 50px;
 		width: 50px;
 	}
+	.tabs {
+		width: 100%;
+	}
+	.header{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1rem;
+		border-bottom: 1px solid lightblue;
+	}
+	.sessions {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 1rem;
+		margin: 2rem 0;
+		font-size: 3rem;
+		font-weight: bold;
+	}
 	.no-wrap {
 		white-space: nowrap;
 	}
+	.settings {
+		cursor: pointer;
+	}
+
+	.settings:hover {
+		color: lightblue;
+	}
+	.icons {
+		display: flex;
+		flex-direction: row;
+		gap: 1rem;
+	}
+	a {
+    color: black;      
+    text-decoration: none; 
+}
 	</style>
 	<script type="text/javascript">
 
@@ -108,44 +147,39 @@ templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode str
 			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/light.css"/>
 			<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js"></script>
 			<script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
+			<script src="https://kit.fontawesome.com/fa78fc50e4.js" crossorigin="anonymous"></script>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<title>MyRotary Analytics</title>
 		</head>
+		@Header()
 		<body onload={ onWindowLoad(mode) } class={ body() }>
-			<header>
-				<div class={ header() }>Myrotaryprojects.org Analytics </div>
-				<sl-divider style="--color: lightblue;"></sl-divider>
-				<div id="subheader" class={ subheader() }>
-					<p>
-						User: { name }
-					</p>
-					<div>Mode: { mode }</div>
-					<div>
-						<sl-button variant="primary" hx-headers='{"Cache-Control":"no-cache"}' hx-get="/logs" hx-target="#tableContainer">
-							Reload
-						</sl-button>
-					</div>
-				</div>
-				<sl-divider style="--color: lightblue;"></sl-divider>
-			</header>
 			<div class={ main() }>
-				<div id="fileStatus">
-					<sl-button variant="primary" hx-get="/getLogsPath" hx-target="#fileStatus">
-						Show File Status
-					</sl-button>
-				</div>
-				<sl-tab-group>
+				<sl-tab-group class="tabs">
 					<sl-tab slot="nav" panel="logs">Rotary Logs</sl-tab>
 					<sl-tab slot="nav" panel="sessions">Sessions</sl-tab>
 					<sl-tab-panel name="logs">
 						@Table(LogEntries)
 					</sl-tab-panel>
-					<sl-tab-panel name="sessions">Under Construction</sl-tab-panel>
+					<sl-tab-panel name="sessions">
+						<div class="sessions">
+							Under Construction
+						</div>
+					</sl-tab-panel>
 				</sl-tab-group>
 			</div>
 		</body>
 	</html>
+}
+
+templ Header() {
+	<header class="header">
+		<div class={ title() }>Myrotaryprojects.org Analytics </div>
+		<div class="icons">
+			<a href="https://myrotaryprojects.org" title="MyRotaryProjects Homepage"><i class="settings fa-solid fa-house fa-lg"></i></a>
+			<a title="Under Construction"><i class="settings fa-solid fa-gear fa-lg"></i></a>
+		</div>
+	</header>
 }
 
 templ Table(LogEntries []pkg.RotaryLog) {
@@ -164,12 +198,56 @@ templ Table(LogEntries []pkg.RotaryLog) {
 		background-color: #ddd;
 		cursor: pointer;
 	}
-
 	#table td, #table th {
  	 border: 1px solid #ddd;
  	 padding: 8px;
 	}
+	.no-wrap {
+		white-space: nowrap;
+	}
+	.buttons {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-end;
+		padding: 1.5rem;
+		gap: 2rem;
+		align-items: center;
+		flex-wrap: wrap;
+	}
 	</style>
+	<script type="text/javascript">
+
+	window.onload = function() {
+		let showFileStatus = false
+		const buttonText = document.getElementById("showFileStatus");
+		if (buttonText) {
+			buttonText.innerHTML = "Show File Status";
+			buttonText.addEventListener("click", function() {
+				showFileStatus = !showFileStatus
+				const fileStatus = document.getElementById("fileStatus");
+				if (showFileStatus) {
+					buttonText.innerHTML = "Hide File Status";
+					fileStatus.style.display = "block";
+				} else {
+					if (fileStatus) {
+						fileStatus.style.display = "none";
+					}
+					buttonText.innerHTML = "Show File Status";
+				}
+			});
+		}
+	}
+		
+	</script>
+	<div class="buttons">
+		<div id="fileStatus"></div>
+		<div>
+			<sl-button id="showFileStatus" variant="primary" hx-get="/getLogsPath" hx-target="#fileStatus"></sl-button>
+		</div>
+		<sl-button variant="primary" hx-headers='{"Cache-Control":"no-cache"}' hx-get="/logs" hx-target="#tableContainer">
+			Reload
+		</sl-button>
+	</div>
 	<div id="tableContainer">
 		<span class={ bold() }>Raw Logs:</span>
 		if LogEntries == nil {
