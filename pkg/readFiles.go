@@ -121,6 +121,10 @@ func marshalLogs(logs []string) ([]RotaryLog, error) {
 			log.Print(errorMessage)
 			return nil, errorMessage
 		}
+		time, err := utils.ParseToTimeWithUtc(entry.RotaryLog.TimeStamp)
+		if err == nil {
+			entry.RotaryLog.TimeStamp = time.UTC().Format("01/02/06 03:04:05 PM")
+		}
 		entries = append(entries, entry.RotaryLog)
 	}
 	reversed := utils.ReverseSlice(entries)
