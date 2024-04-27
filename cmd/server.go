@@ -14,10 +14,13 @@ import (
 
 func main() {
 	mode := getMode()
+	// dont call these functions rather register them so ResponseWriter  and Request can be passed as arguments to them automatically
 	http.Handle("/", handlers.HomeHandler(mode))
 	http.Handle("/login", handlers.LoginPageHandler(mode))
-
-	// 	http.Handle("/hello", handlers.HelloHandler())
+	// TOD have gpt explai nwhy this happenng and needs to be wrapped like this
+	http.Handle("/logs", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		handlers.LogsTable(w, r).ServeHTTP(w, r)
+	}))
 	fmt.Println("Listening on :3000")
 	http.ListenAndServe(":3000", nil)
 }
