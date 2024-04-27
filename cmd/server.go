@@ -21,6 +21,10 @@ func main() {
 	http.Handle("/logs", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		handlers.LogsTable(w, r).ServeHTTP(w, r)
 	}))
+	http.Handle("/getLogsPath", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		handlers.GetLogsPath(w, r).ServeHTTP(w, r)
+	}))
+
 	fmt.Println("Listening on :3000")
 	http.ListenAndServe(":3000", nil)
 }
