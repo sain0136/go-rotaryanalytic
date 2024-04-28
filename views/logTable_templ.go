@@ -13,6 +13,7 @@ import "strings"
 
 import (
 	"github.com/sain0136/go-rotaryanalytic/pkg"
+	"strconv"
 )
 
 func thClass() templ.CSSClass {
@@ -39,7 +40,7 @@ func boldClass() templ.CSSClass {
 	}
 }
 
-func LogTable(LogEntries []pkg.RotaryLog) templ.Component {
+func LogTable(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -52,11 +53,19 @@ func LogTable(LogEntries []pkg.RotaryLog) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<style type=\"text/css\">\r\n\t@media (max-width: 900px) {\r\n\t.column-to-hide {\r\n      display: none;\r\n    }\r\n\t}\r\n\t@media (max-width: 600px) {\r\n\t.column-to-hide-mobile {\r\n\t  display: none;\r\n\t}\r\n\t}\r\n\t.trow:hover {\r\n\t\tbackground-color: #ddd;\r\n\t\tcursor: pointer;\r\n\t}\r\n\r\n\t#table td, #table th {\r\n \t border: 1px solid #ddd;\r\n \t padding: 8px;\r\n\t}\r\n\t</style><div id=\"tableContainer\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<style type=\"text/css\">\r\n\t@media (max-width: 900px) {\r\n\t.column-to-hide {\r\n      display: none;\r\n    }\r\n\t}\r\n\t@media (max-width: 600px) {\r\n\t.column-to-hide-mobile {\r\n\t  display: none;\r\n\t}\r\n\t}\r\n\t.trow:hover {\r\n\t\tbackground-color: #ddd;\r\n\t\tcursor: pointer;\r\n\t}\r\n\r\n\t#table td, #table th {\r\n \t border: 1px solid #ddd;\r\n \t padding: 8px;\r\n\t}\r\n\t.no-wrap {\r\n\t\twhite-space: nowrap;\r\n\t}\r\n\t.small-column{\r\n\t\twidth: 8rem;\r\n\t}\r\n\t</style><div id=\"tableContainer\" last-page=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var2 = []any{boldClass()}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(strconv.Itoa(lastPage)))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var2 = []any{bold()}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -83,7 +92,7 @@ func LogTable(LogEntries []pkg.RotaryLog) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var3 = []any{thClass()}
+			var templ_7745c5c3_Var3 = []any{th()}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var3...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -96,7 +105,7 @@ func LogTable(LogEntries []pkg.RotaryLog) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><th class=\"column-to-hide\" colspan=\"1\">Id</th><th class=\"column-to-hide-mobile\" colspan=\"1\">Timestamp</th><th colspan=\"1\">Type</th><th colspan=\"1\">Event</th><th colspan=\"1\">Status</th><th colspan=\"1\">Source</th><th class=\"column-to-hide\" colspan=\"1\">Message</th></tr></thead> <tbody id=\"tableBody\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><th class=\"column-to-hide\" colspan=\"1\">Id</th><th class=\"column-to-hide-mobile\" colspan=\"1\">Timestamp</th><th class=\"small-column\" colspan=\"1\">Type</th><th class=\"small-column\" colspan=\"1\">Event</th><th class=\"small-column\" colspan=\"1\">Status</th><th class=\"small-column\" colspan=\"1\">Source</th><th class=\"column-to-hide\" colspan=\"1\">Message</th></tr></thead> <tbody id=\"tableBody\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -108,20 +117,20 @@ func LogTable(LogEntries []pkg.RotaryLog) templ.Component {
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(entry.UniqueId)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 60, Col: 50}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 67, Col: 50}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</td><td class=\"column-to-hide-mobile\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</td><td class=\"column-to-hide-mobile no-wrap\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(entry.TimeStamp)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 61, Col: 58}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 68, Col: 66}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -134,7 +143,7 @@ func LogTable(LogEntries []pkg.RotaryLog) templ.Component {
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Type)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 62, Col: 23}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 69, Col: 23}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
@@ -147,7 +156,7 @@ func LogTable(LogEntries []pkg.RotaryLog) templ.Component {
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Event)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 63, Col: 24}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 70, Col: 24}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
@@ -160,7 +169,7 @@ func LogTable(LogEntries []pkg.RotaryLog) templ.Component {
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Status)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 64, Col: 25}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 71, Col: 25}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
@@ -173,7 +182,7 @@ func LogTable(LogEntries []pkg.RotaryLog) templ.Component {
 				var templ_7745c5c3_Var9 string
 				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Source)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 65, Col: 25}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 72, Col: 25}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 				if templ_7745c5c3_Err != nil {
@@ -186,7 +195,7 @@ func LogTable(LogEntries []pkg.RotaryLog) templ.Component {
 				var templ_7745c5c3_Var10 string
 				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Message)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 66, Col: 49}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 73, Col: 49}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 				if templ_7745c5c3_Err != nil {

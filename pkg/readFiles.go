@@ -89,12 +89,12 @@ func GetEnvStatus() (string, error) {
 	return "No path found", nil
 }
 
-func ReadLogFile(path string) ([]RotaryLog, error) {
+func ReadLogFile(path string, page int) ([]RotaryLog, error, int) {
 	logs, err := os.Open(path)
 	if err != nil {
 		errorMessage := fmt.Errorf("error return: %w", err)
 		log.Print(errorMessage)
-		return nil, errorMessage
+		return nil, errorMessage, 0
 	}
 	defer logs.Close()
 
@@ -106,9 +106,20 @@ func ReadLogFile(path string) ([]RotaryLog, error) {
 	}
 	if err := scanner.Err(); err != nil {
 		errorMessage := fmt.Errorf("error return: %w", err)
-		return nil, errorMessage
+		return nil, errorMessage, 0
 	}
-	return marshalLogs(rawLogs)
+
+	marshaledLogs, err := marshalLogs(rawLogs)
+	if err != nil {
+		errorMessage := fmt.Errorf("error return: %w", err)
+		return nil, errorMessage, 0
+	}
+	const logsPerPage = 10
+	start := (page - 1) * logsPerPage
+	end := start + logsPerPage
+	lastPage := len(marshaledLogs) / logsPerPage
+	// Cool go syntax
+	return marshaledLogs[start:end], nil, lastPage
 }
 
 func marshalLogs(logs []string) ([]RotaryLog, error) {

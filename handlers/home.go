@@ -16,12 +16,12 @@ func HomeHandler(mode string) http.Handler {
 		if err != nil {
 			fmt.Println(err)
 		}
-		rawLogEntries, writeErr := pkg.ReadLogFile(filePath)
+		rawLogEntries, writeErr, lastPage := pkg.ReadLogFile(filePath, 1)
 		var component templ.Component
 		if writeErr != nil {
-			component = views.Hello("Peter Ivan Labelle", filePath, nil, mode)
+			component = views.Hello("Peter Ivan Labelle", filePath, nil, mode, lastPage)
 		} else {
-			component = views.Hello("Peter Ivan Labelle", filePath, rawLogEntries, mode)
+			component = views.Hello("Peter Ivan Labelle", filePath, rawLogEntries, mode, lastPage)
 		}
 		templ.Handler(component).ServeHTTP(w, r)
 	})
@@ -34,18 +34,18 @@ func LoginPageHandler(mode string) http.Handler {
 	})
 }
 
-func LogsTable(w http.ResponseWriter, r *http.Request) http.Handler {
+func LogsTable(w http.ResponseWriter, r *http.Request, page int) http.Handler {
 	filePath, err := pkg.GetEnvStatus()
 	if err != nil {
 		fmt.Println(err)
 	}
-	rawLogEntries, writeErr := pkg.ReadLogFile(filePath)
+	rawLogEntries, writeErr, lastPage := pkg.ReadLogFile(filePath, page)
 
 	var component templ.Component
 	if writeErr != nil {
-		component = views.LogTable(nil)
+		component = views.LogTable(nil, lastPage)
 	} else {
-		component = views.LogTable(rawLogEntries)
+		component = views.LogTable(rawLogEntries, lastPage)
 	}
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		templ.Handler(component).ServeHTTP(w, r)

@@ -13,6 +13,7 @@ import "strings"
 
 import (
 	"github.com/sain0136/go-rotaryanalytic/pkg"
+	"strconv"
 )
 
 func body() templ.CSSClass {
@@ -160,7 +161,7 @@ func onWindowLoad(mode string) templ.ComponentScript {
 //	}
 //
 // }
-func Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode string) templ.Component {
+func Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode string, lastPage int) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -173,7 +174,7 @@ func Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode stri
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<style type=\"text/css\">\r\n\timg {\r\n\t\theight: 50px;\r\n\t\twidth: 50px;\r\n\t}\r\n\t.tabs {\r\n\t\twidth: 100%;\r\n\t}\r\n\t.header{\r\n\t\tdisplay: flex;\r\n\t\tflex-direction: row;\r\n\t\tjustify-content: space-between;\r\n\t\talign-items: center;\r\n\t\tpadding: 1rem;\r\n\t\tborder-bottom: 1px solid lightblue;\r\n\t}\r\n\t.sessions {\r\n\t\twidth: 100%;\r\n\t\tdisplay: flex;\r\n\t\tflex-direction: column;\r\n\t\tjustify-content: center;\r\n\t\talign-items: center;\r\n\t\tgap: 1rem;\r\n\t\tmargin: 2rem 0;\r\n\t\tfont-size: 3rem;\r\n\t\tfont-weight: bold;\r\n\t}\r\n\t.no-wrap {\r\n\t\twhite-space: nowrap;\r\n\t}\r\n\t.settings {\r\n\t\tcursor: pointer;\r\n\t}\r\n\r\n\t.settings:hover {\r\n\t\tcolor: lightblue;\r\n\t}\r\n\t.icons {\r\n\t\tdisplay: flex;\r\n\t\tflex-direction: row;\r\n\t\tgap: 1rem;\r\n\t}\r\n\ta {\r\n    color: black;      \r\n    text-decoration: none; \r\n}\r\n\t</style><script type=\"text/javascript\">\r\n\r\n  \t</script><html><head><link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/light.css\"><script type=\"module\" src=\"https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js\"></script><script src=\"https://unpkg.com/htmx.org@1.9.12\" integrity=\"sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2\" crossorigin=\"anonymous\"></script><script src=\"https://kit.fontawesome.com/fa78fc50e4.js\" crossorigin=\"anonymous\"></script><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>MyRotary Analytics</title></head>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<style type=\"text/css\">\r\n\timg {\r\n\t\theight: 50px;\r\n\t\twidth: 50px;\r\n\t}\r\n\t.tabs {\r\n\t\twidth: 100%;\r\n\t}\r\n\t.header{\r\n\t\tdisplay: flex;\r\n\t\tflex-direction: row;\r\n\t\tjustify-content: space-between;\r\n\t\talign-items: center;\r\n\t\tpadding: 1rem;\r\n\t\tborder-bottom: 1px solid lightblue;\r\n\t}\r\n\t.sessions {\r\n\t\twidth: 100%;\r\n\t\tdisplay: flex;\r\n\t\tflex-direction: column;\r\n\t\tjustify-content: center;\r\n\t\talign-items: center;\r\n\t\tgap: 1rem;\r\n\t\tmargin: 2rem 0;\r\n\t\tfont-size: 3rem;\r\n\t\tfont-weight: bold;\r\n\t}\r\n\t.no-wrap {\r\n\t\twhite-space: nowrap;\r\n\t}\r\n\t.settings {\r\n\t\tcursor: pointer;\r\n\t}\r\n\r\n\t.settings:hover {\r\n\t\tcolor: lightblue;\r\n\t}\r\n\t.icons {\r\n\t\tdisplay: flex;\r\n\t\tflex-direction: row;\r\n\t\tgap: 1rem;\r\n\t}\r\n\ta {\r\n    color: black;      \r\n    text-decoration: none; \r\n}\r\n\t</style><script type=\"text/javascript\">\r\n\t\r\n\r\n  \t</script><html><head><link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/light.css\"><script type=\"module\" src=\"https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js\"></script><script src=\"https://unpkg.com/htmx.org@1.9.12\" integrity=\"sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2\" crossorigin=\"anonymous\"></script><script src=\"https://kit.fontawesome.com/fa78fc50e4.js\" crossorigin=\"anonymous\"></script><link rel=\"stylesheet\" href=\"https://assets.ubuntu.com/v1/vanilla-framework-version-4.10.0.min.css\"><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>MyRotary Analytics</title></head>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -228,7 +229,7 @@ func Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode stri
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Table(LogEntries).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Table(LogEntries, lastPage).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -284,7 +285,7 @@ func Header() templ.Component {
 	})
 }
 
-func Table(LogEntries []pkg.RotaryLog) templ.Component {
+func Table(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -297,7 +298,15 @@ func Table(LogEntries []pkg.RotaryLog) templ.Component {
 			templ_7745c5c3_Var7 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<style type=\"text/css\">\r\n\t@media (max-width: 990px) {\r\n\t.column-to-hide {\r\n      display: none;\r\n    }\r\n\t}\r\n\t@media (max-width: 600px) {\r\n\t.column-to-hide-mobile {\r\n\t  display: none;\r\n\t}\r\n\t}\r\n\t.trow:hover {\r\n\t\tbackground-color: #ddd;\r\n\t\tcursor: pointer;\r\n\t}\r\n\t#table td, #table th {\r\n \t border: 1px solid #ddd;\r\n \t padding: 8px;\r\n\t}\r\n\t.no-wrap {\r\n\t\twhite-space: nowrap;\r\n\t}\r\n\t.buttons {\r\n\t\tdisplay: flex;\r\n\t\tflex-direction: row;\r\n\t\tjustify-content: flex-end;\r\n\t\tpadding: 1.5rem;\r\n\t\tgap: 2rem;\r\n\t\talign-items: center;\r\n\t\tflex-wrap: wrap;\r\n\t}\r\n\t</style><script type=\"text/javascript\">\r\n\r\n\twindow.onload = function() {\r\n\t\tlet showFileStatus = false\r\n\t\tconst buttonText = document.getElementById(\"showFileStatus\");\r\n\t\tif (buttonText) {\r\n\t\t\tbuttonText.innerHTML = \"Show File Status\";\r\n\t\t\tbuttonText.addEventListener(\"click\", function() {\r\n\t\t\t\tshowFileStatus = !showFileStatus\r\n\t\t\t\tconst fileStatus = document.getElementById(\"fileStatus\");\r\n\t\t\t\tif (showFileStatus) {\r\n\t\t\t\t\tbuttonText.innerHTML = \"Hide File Status\";\r\n\t\t\t\t\tfileStatus.style.display = \"block\";\r\n\t\t\t\t} else {\r\n\t\t\t\t\tif (fileStatus) {\r\n\t\t\t\t\t\tfileStatus.style.display = \"none\";\r\n\t\t\t\t\t}\r\n\t\t\t\t\tbuttonText.innerHTML = \"Show File Status\";\r\n\t\t\t\t}\r\n\t\t\t});\r\n\t\t}\r\n\t}\r\n\t\t\r\n\t</script><div class=\"buttons\"><div id=\"fileStatus\"></div><div><sl-button id=\"showFileStatus\" variant=\"primary\" hx-get=\"/getLogsPath\" hx-target=\"#fileStatus\"></sl-button></div><sl-button variant=\"primary\" hx-headers=\"{&#34;Cache-Control&#34;:&#34;no-cache&#34;}\" hx-get=\"/logs\" hx-target=\"#tableContainer\">Reload\r</sl-button></div><div id=\"tableContainer\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<style type=\"text/css\">\r\n\t@media (max-width: 990px) {\r\n\t.column-to-hide {\r\n      display: none;\r\n    }\r\n\t}\r\n\t@media (max-width: 600px) {\r\n\t.column-to-hide-mobile {\r\n\t  display: none;\r\n\t}\r\n\t}\r\n\t.trow:hover {\r\n\t\tbackground-color: #ddd;\r\n\t\tcursor: pointer;\r\n\t}\r\n\t#table td, #table th {\r\n \t border: 1px solid #ddd;\r\n \t padding: 8px;\r\n\t}\r\n\t.no-wrap {\r\n\t\twhite-space: nowrap;\r\n\t}\r\n\t.buttons {\r\n\t\tdisplay: flex;\r\n\t\tflex-direction: row;\r\n\t\tjustify-content: flex-end;\r\n\t\tpadding: 1.5rem;\r\n\t\tgap: 2rem;\r\n\t\talign-items: center;\r\n\t\tflex-wrap: wrap;\r\n\t}\r\n\t.small-column{\r\n\t\twidth: 8rem;\r\n\t}\r\n\t</style><script type=\"text/javascript\">\r\n\twindow.currentPage = 1\r\n\twindow.getPageNumber = function(action) {\r\n\t\tif (action == \"next\") {\r\n\t\twindow.currentPage = window.currentPage + 1; // Increment page number and return it\r\n\t\t}\r\n\t\tif (action == \"prev\" && window.currentPage > 1) {\r\n\t\twindow.currentPage = window.currentPage - 1; // Decrement page number and return it\r\n\t\t} \r\n\t\twindow.prevButton.style.display = window.currentPage > 1 ? 'inline-flex' : 'none';\r\n\t\tif (parseInt(window.currentPage) === (parseInt(window.lastPage) + 1)) {\t\r\n\t\t\twindow.nextButton.style.display = 'none';\r\n\t\t} else {\r\n\t\t\twindow.nextButton.style.display = 'inline-flex';\r\n\t\t}\r\n\t\treturn window.currentPage\r\n\t}\r\n\t\r\n\twindow.onload = function() {\r\n\t\twindow.nextButton = document.getElementById(\"nextPageButton\");\r\n\t\twindow.prevButton = document.getElementById(\"previousPageButton\");\r\n\t\tif (window.currentPage == 1 && window.prevButton) {\r\n\t\t\twindow.prevButton.style.display = \"none\" ;\r\n\t\t}\t\r\n\t\tlet body = document.getElementById(\"tableContainer\")\r\n\t\tif (body) {\r\n\t\t\twindow.lastPage = body.getAttribute(\"last-page\")\r\n\t\t}\r\n\t\tlet showFileStatus = false\r\n\t\tconst buttonText = document.getElementById(\"showFileStatus\");\r\n\t\tif (buttonText) {\r\n\t\t\tbuttonText.innerHTML = \"Show File Status\";\r\n\t\t\tbuttonText.addEventListener(\"click\", function() {\r\n\t\t\t\tshowFileStatus = !showFileStatus\r\n\t\t\t\tconst fileStatus = document.getElementById(\"fileStatus\");\r\n\t\t\t\tif (showFileStatus) {\r\n\t\t\t\t\tbuttonText.innerHTML = \"Hide File Status\";\r\n\t\t\t\t\tfileStatus.style.display = \"block\";\r\n\t\t\t\t} else {\r\n\t\t\t\t\tif (fileStatus) {\r\n\t\t\t\t\t\tfileStatus.style.display = \"none\";\r\n\t\t\t\t\t}\r\n\t\t\t\t\tbuttonText.innerHTML = \"Show File Status\";\r\n\t\t\t\t}\r\n\t\t\t});\r\n\t\t}\r\n\t}\r\n\t\t\r\n\t</script><div class=\"buttons\"><div id=\"fileStatus\"></div><div><sl-button id=\"showFileStatus\" variant=\"primary\" hx-get=\"/getLogsPath\" hx-target=\"#fileStatus\"></sl-button></div><sl-button variant=\"primary\" hx-headers=\"{&#34;Cache-Control&#34;:&#34;no-cache&#34;}\" hx-get=\"/logs\" hx-target=\"#tableContainer\">Reload\r</sl-button></div><div id=\"tableContainer\" last-page=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(strconv.Itoa(lastPage)))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -341,7 +350,7 @@ func Table(LogEntries []pkg.RotaryLog) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><th class=\"column-to-hide\" colspan=\"1\">Id</th><th class=\"column-to-hide-mobile\" colspan=\"1\">Timestamp</th><th colspan=\"1\">Type</th><th colspan=\"1\">Event</th><th colspan=\"1\">Status</th><th colspan=\"1\">Source</th><th class=\"column-to-hide\" colspan=\"1\">Message</th></tr></thead> <tbody id=\"tableBody\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><th class=\"column-to-hide\" colspan=\"1\">Id</th><th class=\"column-to-hide-mobile\" colspan=\"1\">Timestamp</th><th class=\"small-column\" colspan=\"1\">Type</th><th class=\"small-column\" colspan=\"1\">Event</th><th class=\"small-column\" colspan=\"1\">Status</th><th class=\"small-column\" colspan=\"1\">Source</th><th class=\"column-to-hide\" colspan=\"1\">Message</th></tr></thead> <tbody id=\"tableBody\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -353,7 +362,7 @@ func Table(LogEntries []pkg.RotaryLog) templ.Component {
 				var templ_7745c5c3_Var10 string
 				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(entry.UniqueId)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 270, Col: 50}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 301, Col: 50}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 				if templ_7745c5c3_Err != nil {
@@ -366,7 +375,7 @@ func Table(LogEntries []pkg.RotaryLog) templ.Component {
 				var templ_7745c5c3_Var11 string
 				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(entry.TimeStamp)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 271, Col: 66}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 302, Col: 66}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 				if templ_7745c5c3_Err != nil {
@@ -379,7 +388,7 @@ func Table(LogEntries []pkg.RotaryLog) templ.Component {
 				var templ_7745c5c3_Var12 string
 				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Type)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 272, Col: 23}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 303, Col: 23}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 				if templ_7745c5c3_Err != nil {
@@ -392,7 +401,7 @@ func Table(LogEntries []pkg.RotaryLog) templ.Component {
 				var templ_7745c5c3_Var13 string
 				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Event)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 273, Col: 24}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 304, Col: 24}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 				if templ_7745c5c3_Err != nil {
@@ -405,7 +414,7 @@ func Table(LogEntries []pkg.RotaryLog) templ.Component {
 				var templ_7745c5c3_Var14 string
 				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Status)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 274, Col: 25}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 305, Col: 25}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 				if templ_7745c5c3_Err != nil {
@@ -418,7 +427,7 @@ func Table(LogEntries []pkg.RotaryLog) templ.Component {
 				var templ_7745c5c3_Var15 string
 				templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Source)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 275, Col: 25}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 306, Col: 25}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 				if templ_7745c5c3_Err != nil {
@@ -431,7 +440,7 @@ func Table(LogEntries []pkg.RotaryLog) templ.Component {
 				var templ_7745c5c3_Var16 string
 				templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Message)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 276, Col: 49}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 307, Col: 49}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 				if templ_7745c5c3_Err != nil {
@@ -447,7 +456,7 @@ func Table(LogEntries []pkg.RotaryLog) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div><sl-button id=\"previousPageButton\" variant=\"default\" hx-target=\"#tableContainer\" hx-get=\"/logs\" hx-vals=\"js:{page: getPageNumber(&#39;prev&#39;)}\">Previous Page</sl-button> <sl-button id=\"nextPageButton\" variant=\"default\" hx-target=\"#tableContainer\" hx-get=\"/logs\" hx-vals=\"js:{page: getPageNumber(&#39;next&#39;)}\">Next Page</sl-button></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

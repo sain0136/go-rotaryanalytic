@@ -58,16 +58,6 @@ func h3() templ.CSSClass {
 	}
 }
 
-func onchnage() templ.ComponentScript {
-	return templ.ComponentScript{
-		Name: `__templ_onchnage_803a`,
-		Function: `function __templ_onchnage_803a(){console.log("dds");
-}`,
-		Call:       templ.SafeScript(`__templ_onchnage_803a`),
-		CallInline: templ.SafeScriptInline(`__templ_onchnage_803a`),
-	}
-}
-
 func buttonClick(mode string) templ.ComponentScript {
 	return templ.ComponentScript{
 		Name: `__templ_buttonClick_9818`,
