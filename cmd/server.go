@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strconv"
 
 	"github.com/joho/godotenv"
 	"github.com/sain0136/go-rotaryanalytic/handlers"
@@ -19,7 +20,12 @@ func main() {
 	http.Handle("/login", handlers.LoginPageHandler(mode))
 	// TOD have gpt explain why this happenng and needs to be wrapped like this
 	http.Handle("/logs", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		handlers.LogsTable(w, r).ServeHTTP(w, r)
+		pageStr := r.URL.Query().Get("page")
+		page, err := strconv.Atoi(pageStr)
+		if err != nil {
+			page = 1 // Default page
+		}
+		handlers.LogsTable(w, r, page).ServeHTTP(w, r)
 	}))
 	http.Handle("/getLogsPath", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		handlers.GetLogsPath(w, r).ServeHTTP(w, r)

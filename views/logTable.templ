@@ -2,6 +2,7 @@ package views
 
 import (
 	"github.com/sain0136/go-rotaryanalytic/pkg"
+	"strconv"
 )
 
 css thClass() {
@@ -16,7 +17,7 @@ css boldClass() {
 	font-weight: bold;
 }
 
-templ LogTable(LogEntries []pkg.RotaryLog) {
+templ LogTable(LogEntries []pkg.RotaryLog , lastPage int) {
 	<style type="text/css">
 	@media (max-width: 900px) {
 	.column-to-hide {
@@ -37,21 +38,27 @@ templ LogTable(LogEntries []pkg.RotaryLog) {
  	 border: 1px solid #ddd;
  	 padding: 8px;
 	}
+	.no-wrap {
+		white-space: nowrap;
+	}
+	.small-column{
+		width: 8rem;
+	}
 	</style>
-	<div id="tableContainer">
-		<span class={ boldClass() }>Raw Logs:</span>
+	<div id="tableContainer" last-page={ strconv.Itoa(lastPage) }>
+		<span class={ bold() }>Raw Logs:</span>
 		if LogEntries == nil {
 			<span>Error: LogEntries could not be processed</span>
 		} else {
 			<table id="table">
 				<thead>
-					<tr class={ thClass() }>
+					<tr class={ th() }>
 						<th class="column-to-hide" colspan="1">Id</th>
 						<th class="column-to-hide-mobile" colspan="1">Timestamp</th>
-						<th colspan="1">Type</th>
-						<th colspan="1">Event</th>
-						<th colspan="1">Status</th>
-						<th colspan="1">Source</th>
+						<th class="small-column" colspan="1">Type</th>
+						<th class="small-column" colspan="1">Event</th>
+						<th class="small-column" colspan="1">Status</th>
+						<th class="small-column" colspan="1">Source</th>
 						<th class="column-to-hide" colspan="1">Message</th>
 					</tr>
 				</thead>
@@ -59,7 +66,7 @@ templ LogTable(LogEntries []pkg.RotaryLog) {
 					for _, entry := range LogEntries {
 						<tr class="trow">
 							<td class="column-to-hide">{ entry.UniqueId }</td>
-							<td class="column-to-hide-mobile">{ entry.TimeStamp }</td>
+							<td class="column-to-hide-mobile no-wrap">{ entry.TimeStamp }</td>
 							<td>{ entry.Type }</td>
 							<td>{ entry.Event }</td>
 							<td>{ entry.Status }</td>

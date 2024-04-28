@@ -2,6 +2,7 @@ package views
 
 import (
 	"github.com/sain0136/go-rotaryanalytic/pkg"
+	"strconv"
 )
 
 css body() {
@@ -91,7 +92,7 @@ script onWindowLoad(mode string) {
 //   gap: 1rem;
 // }
 // }
-templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode string) {
+templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode string, lastPage int) {
 	<style type="text/css">
 	img {
 		height: 50px;
@@ -140,6 +141,7 @@ templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode str
 }
 	</style>
 	<script type="text/javascript">
+	
 
   	</script>
 	<html>
@@ -148,6 +150,7 @@ templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode str
 			<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js"></script>
 			<script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
 			<script src="https://kit.fontawesome.com/fa78fc50e4.js" crossorigin="anonymous"></script>
+			<link rel="stylesheet" href="https://assets.ubuntu.com/v1/vanilla-framework-version-4.10.0.min.css"/>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<title>MyRotary Analytics</title>
@@ -159,7 +162,7 @@ templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode str
 					<sl-tab slot="nav" panel="logs">Rotary Logs</sl-tab>
 					<sl-tab slot="nav" panel="sessions">Sessions</sl-tab>
 					<sl-tab-panel name="logs">
-						@Table(LogEntries)
+						@Table(LogEntries, lastPage)
 					</sl-tab-panel>
 					<sl-tab-panel name="sessions">
 						<div class="sessions">
@@ -182,7 +185,7 @@ templ Header() {
 	</header>
 }
 
-templ Table(LogEntries []pkg.RotaryLog) {
+templ Table(LogEntries []pkg.RotaryLog, lastPage int) {
 	<style type="text/css">
 	@media (max-width: 990px) {
 	.column-to-hide {
@@ -214,10 +217,38 @@ templ Table(LogEntries []pkg.RotaryLog) {
 		align-items: center;
 		flex-wrap: wrap;
 	}
+	.small-column{
+		width: 8rem;
+	}
 	</style>
 	<script type="text/javascript">
-
+	window.currentPage = 1
+	window.getPageNumber = function(action) {
+		if (action == "next") {
+		window.currentPage = window.currentPage + 1; // Increment page number and return it
+		}
+		if (action == "prev" && window.currentPage > 1) {
+		window.currentPage = window.currentPage - 1; // Decrement page number and return it
+		} 
+		window.prevButton.style.display = window.currentPage > 1 ? 'inline-flex' : 'none';
+		if (parseInt(window.currentPage) === (parseInt(window.lastPage) + 1)) {	
+			window.nextButton.style.display = 'none';
+		} else {
+			window.nextButton.style.display = 'inline-flex';
+		}
+		return window.currentPage
+	}
+	
 	window.onload = function() {
+		window.nextButton = document.getElementById("nextPageButton");
+		window.prevButton = document.getElementById("previousPageButton");
+		if (window.currentPage == 1 && window.prevButton) {
+			window.prevButton.style.display = "none" ;
+		}	
+		let body = document.getElementById("tableContainer")
+		if (body) {
+			window.lastPage = body.getAttribute("last-page")
+		}
 		let showFileStatus = false
 		const buttonText = document.getElementById("showFileStatus");
 		if (buttonText) {
@@ -248,7 +279,7 @@ templ Table(LogEntries []pkg.RotaryLog) {
 			Reload
 		</sl-button>
 	</div>
-	<div id="tableContainer">
+	<div id="tableContainer" last-page={ strconv.Itoa(lastPage) }>
 		<span class={ bold() }>Raw Logs:</span>
 		if LogEntries == nil {
 			<span>Error: LogEntries could not be processed</span>
@@ -258,10 +289,10 @@ templ Table(LogEntries []pkg.RotaryLog) {
 					<tr class={ th() }>
 						<th class="column-to-hide" colspan="1">Id</th>
 						<th class="column-to-hide-mobile" colspan="1">Timestamp</th>
-						<th colspan="1">Type</th>
-						<th colspan="1">Event</th>
-						<th colspan="1">Status</th>
-						<th colspan="1">Source</th>
+						<th class="small-column" colspan="1">Type</th>
+						<th class="small-column" colspan="1">Event</th>
+						<th class="small-column" colspan="1">Status</th>
+						<th class="small-column" colspan="1">Source</th>
 						<th class="column-to-hide" colspan="1">Message</th>
 					</tr>
 				</thead>
@@ -280,5 +311,9 @@ templ Table(LogEntries []pkg.RotaryLog) {
 				</tbody>
 			</table>
 		}
+	</div>
+	<div>
+		<sl-button id="previousPageButton" variant="default" hx-target="#tableContainer" hx-get="/logs" hx-vals="js:{page: getPageNumber('prev')}">Previous Page</sl-button>
+		<sl-button id="nextPageButton" variant="default" hx-target="#tableContainer" hx-get="/logs" hx-vals="js:{page: getPageNumber('next')}">Next Page</sl-button>
 	</div>
 }
