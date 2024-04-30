@@ -80,6 +80,10 @@ script onWindowLoad(mode string) {
 	}
 }
 
+script reloadPage() {
+	window.location.reload();
+}
+
 // <div id="subheader" class={ subheader() }>
 // 	<p>
 // 		User: { name }
@@ -231,6 +235,13 @@ templ Table(LogEntries []pkg.RotaryLog, lastPage int) {
 		window.currentPage = window.currentPage - 1; // Decrement page number and return it
 		} 
 		window.prevButton.style.display = window.currentPage > 1 ? 'inline-flex' : 'none';
+		if(window.currentPage > 1 && window.refreshIfNotFirstPage && window.reloadButton) {
+			window.refreshIfNotFirstPage.style.display = 'inline-flex';
+			window.reloadButton.style.display = 'none';
+		} else {
+			window.refreshIfNotFirstPage.style.display = 'none';
+			window.reloadButton.style.display = 'inline-flex';
+		}
 		if (parseInt(window.currentPage) === (parseInt(window.lastPage) + 1)) {	
 			window.nextButton.style.display = 'none';
 		} else {
@@ -242,6 +253,11 @@ templ Table(LogEntries []pkg.RotaryLog, lastPage int) {
 	window.onload = function() {
 		window.nextButton = document.getElementById("nextPageButton");
 		window.prevButton = document.getElementById("previousPageButton");
+		window.reloadButton = document.getElementById("reload");
+		window.refreshIfNotFirstPage = document.getElementById("refreshIfNotFirstPage");
+		if(window.refreshIfNotFirstPage){
+			window.refreshIfNotFirstPage.style.display = 'none';
+		}
 		if (window.currentPage == 1 && window.prevButton) {
 			window.prevButton.style.display = "none" ;
 		}	
@@ -275,8 +291,11 @@ templ Table(LogEntries []pkg.RotaryLog, lastPage int) {
 		<div>
 			<sl-button id="showFileStatus" variant="primary" hx-get="/getLogsPath" hx-target="#fileStatus"></sl-button>
 		</div>
-		<sl-button variant="primary" hx-headers='{"Cache-Control":"no-cache"}' hx-get="/logs" hx-target="#tableContainer">
+		<sl-button id="reload" variant="primary" hx-headers='{"Cache-Control":"no-cache"}' hx-get="/logs" hx-target="#tableContainer">
 			Reload
+		</sl-button>
+		<sl-button onclick={ reloadPage() } id="refreshIfNotFirstPage" variant="primary" oncli>
+			Refresh
 		</sl-button>
 	</div>
 	<div id="tableContainer" last-page={ strconv.Itoa(lastPage) }>
