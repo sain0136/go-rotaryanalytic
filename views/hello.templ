@@ -138,7 +138,7 @@ templ Hello(name string, fileStatus string, LogEntries []pkg.RotaryLog, mode str
 		}
 		setTimeout(function () {
 			document.getElementById("appBody").style.opacity = "1";
-		}, 250);
+		}, 1000);
 		});
   	</script>
 	<html>
@@ -233,7 +233,7 @@ templ Table(LogEntries []pkg.RotaryLog, lastPage int) {
 		window.refreshIfNotFirstPage = document.getElementById("refreshIfNotFirstPage");
 		window.pageBadge = document.getElementById("pageBadge");
 		if(window.pageBadge) {
-			window.pageBadge.innerHTML = "Page " + window.currentPage + `of ${window.lastPage ?? 'TBD'}`;
+			window.pageBadge.innerHTML = "Page " + window.currentPage;
 		}
 		if(window.refreshIfNotFirstPage){
 			window.refreshIfNotFirstPage.style.display = 'none';
@@ -272,7 +272,7 @@ templ Table(LogEntries []pkg.RotaryLog, lastPage int) {
 		window.currentPage = window.currentPage - 1; // Decrement page number and return it
 		} 
 		if(window.pageBadge) {
-			window.pageBadge.innerHTML = "Page " + window.currentPage;
+			window.pageBadge.innerHTML = "Page " + window.currentPage  + `${window.lastPage ? ' of ' : ''} ${window.lastPage ?? ''}`;
 		}
 		window.prevButton.style.display = window.currentPage > 1 ? 'inline-flex' : 'none';
 		if(window.currentPage > 1 && window.refreshIfNotFirstPage && window.reloadButton) {
@@ -292,13 +292,12 @@ templ Table(LogEntries []pkg.RotaryLog, lastPage int) {
 
 		
 	</script>
-
 	<div class="buttons">
 		<div class="buttonGroup">
-		<sl-button id="previousPageButton" variant="default" hx-target="#tableContainer" hx-get="/logs" hx-vals="js:{page: getPageNumber('prev')}">Previous Page</sl-button>
-		<sl-button id="nextPageButton" variant="default" hx-target="#tableContainer" hx-get="/logs" hx-vals="js:{page: getPageNumber('next')}">Next Page</sl-button>
-		<sl-badge id="pageBadge" variant="neutral"></sl-badge>
-	</div>
+			<sl-button id="previousPageButton" variant="default" hx-target="#tableContainer" hx-get="/logs" hx-vals="js:{page: getPageNumber('prev')}">Previous Page</sl-button>
+			<sl-button id="nextPageButton" variant="default" hx-target="#tableContainer" hx-get="/logs" hx-vals="js:{page: getPageNumber('next')}">Next Page</sl-button>
+			<sl-badge id="pageBadge" variant="neutral"></sl-badge>
+		</div>
 		<div id="fileStatus"></div>
 		<div>
 			<sl-button id="showFileStatus" variant="primary" hx-get="/getLogsPath" hx-target="#fileStatus"></sl-button>
