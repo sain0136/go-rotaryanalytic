@@ -145,6 +145,16 @@ func onWindowLoad(mode string) templ.ComponentScript {
 	}
 }
 
+func reloadPage() templ.ComponentScript {
+	return templ.ComponentScript{
+		Name: `__templ_reloadPage_e431`,
+		Function: `function __templ_reloadPage_e431(){window.location.reload();
+}`,
+		Call:       templ.SafeScript(`__templ_reloadPage_e431`),
+		CallInline: templ.SafeScriptInline(`__templ_reloadPage_e431`),
+	}
+}
+
 // <div id="subheader" class={ subheader() }>
 //
 //	<p>
@@ -298,7 +308,24 @@ func Table(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 			templ_7745c5c3_Var7 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<style type=\"text/css\">\r\n\t@media (max-width: 990px) {\r\n\t.column-to-hide {\r\n      display: none;\r\n    }\r\n\t}\r\n\t@media (max-width: 600px) {\r\n\t.column-to-hide-mobile {\r\n\t  display: none;\r\n\t}\r\n\t}\r\n\t.trow:hover {\r\n\t\tbackground-color: #ddd;\r\n\t\tcursor: pointer;\r\n\t}\r\n\t#table td, #table th {\r\n \t border: 1px solid #ddd;\r\n \t padding: 8px;\r\n\t}\r\n\t.no-wrap {\r\n\t\twhite-space: nowrap;\r\n\t}\r\n\t.buttons {\r\n\t\tdisplay: flex;\r\n\t\tflex-direction: row;\r\n\t\tjustify-content: flex-end;\r\n\t\tpadding: 1.5rem;\r\n\t\tgap: 2rem;\r\n\t\talign-items: center;\r\n\t\tflex-wrap: wrap;\r\n\t}\r\n\t.small-column{\r\n\t\twidth: 8rem;\r\n\t}\r\n\t</style><script type=\"text/javascript\">\r\n\twindow.currentPage = 1\r\n\twindow.getPageNumber = function(action) {\r\n\t\tif (action == \"next\") {\r\n\t\twindow.currentPage = window.currentPage + 1; // Increment page number and return it\r\n\t\t}\r\n\t\tif (action == \"prev\" && window.currentPage > 1) {\r\n\t\twindow.currentPage = window.currentPage - 1; // Decrement page number and return it\r\n\t\t} \r\n\t\twindow.prevButton.style.display = window.currentPage > 1 ? 'inline-flex' : 'none';\r\n\t\tif (parseInt(window.currentPage) === (parseInt(window.lastPage) + 1)) {\t\r\n\t\t\twindow.nextButton.style.display = 'none';\r\n\t\t} else {\r\n\t\t\twindow.nextButton.style.display = 'inline-flex';\r\n\t\t}\r\n\t\treturn window.currentPage\r\n\t}\r\n\t\r\n\twindow.onload = function() {\r\n\t\twindow.nextButton = document.getElementById(\"nextPageButton\");\r\n\t\twindow.prevButton = document.getElementById(\"previousPageButton\");\r\n\t\tif (window.currentPage == 1 && window.prevButton) {\r\n\t\t\twindow.prevButton.style.display = \"none\" ;\r\n\t\t}\t\r\n\t\tlet body = document.getElementById(\"tableContainer\")\r\n\t\tif (body) {\r\n\t\t\twindow.lastPage = body.getAttribute(\"last-page\")\r\n\t\t}\r\n\t\tlet showFileStatus = false\r\n\t\tconst buttonText = document.getElementById(\"showFileStatus\");\r\n\t\tif (buttonText) {\r\n\t\t\tbuttonText.innerHTML = \"Show File Status\";\r\n\t\t\tbuttonText.addEventListener(\"click\", function() {\r\n\t\t\t\tshowFileStatus = !showFileStatus\r\n\t\t\t\tconst fileStatus = document.getElementById(\"fileStatus\");\r\n\t\t\t\tif (showFileStatus) {\r\n\t\t\t\t\tbuttonText.innerHTML = \"Hide File Status\";\r\n\t\t\t\t\tfileStatus.style.display = \"block\";\r\n\t\t\t\t} else {\r\n\t\t\t\t\tif (fileStatus) {\r\n\t\t\t\t\t\tfileStatus.style.display = \"none\";\r\n\t\t\t\t\t}\r\n\t\t\t\t\tbuttonText.innerHTML = \"Show File Status\";\r\n\t\t\t\t}\r\n\t\t\t});\r\n\t\t}\r\n\t}\r\n\t\t\r\n\t</script><div class=\"buttons\"><div id=\"fileStatus\"></div><div><sl-button id=\"showFileStatus\" variant=\"primary\" hx-get=\"/getLogsPath\" hx-target=\"#fileStatus\"></sl-button></div><sl-button variant=\"primary\" hx-headers=\"{&#34;Cache-Control&#34;:&#34;no-cache&#34;}\" hx-get=\"/logs\" hx-target=\"#tableContainer\">Reload\r</sl-button></div><div id=\"tableContainer\" last-page=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<style type=\"text/css\">\r\n\t@media (max-width: 990px) {\r\n\t.column-to-hide {\r\n      display: none;\r\n    }\r\n\t}\r\n\t@media (max-width: 600px) {\r\n\t.column-to-hide-mobile {\r\n\t  display: none;\r\n\t}\r\n\t}\r\n\t.trow:hover {\r\n\t\tbackground-color: #ddd;\r\n\t\tcursor: pointer;\r\n\t}\r\n\t#table td, #table th {\r\n \t border: 1px solid #ddd;\r\n \t padding: 8px;\r\n\t}\r\n\t.no-wrap {\r\n\t\twhite-space: nowrap;\r\n\t}\r\n\t.buttons {\r\n\t\tdisplay: flex;\r\n\t\tflex-direction: row;\r\n\t\tjustify-content: flex-end;\r\n\t\tpadding: 1.5rem;\r\n\t\tgap: 2rem;\r\n\t\talign-items: center;\r\n\t\tflex-wrap: wrap;\r\n\t}\r\n\t.small-column{\r\n\t\twidth: 8rem;\r\n\t}\r\n\t</style><script type=\"text/javascript\">\r\n\twindow.currentPage = 1\r\n\twindow.getPageNumber = function(action) {\r\n\t\tif (action == \"next\") {\r\n\t\twindow.currentPage = window.currentPage + 1; // Increment page number and return it\r\n\t\t}\r\n\t\tif (action == \"prev\" && window.currentPage > 1) {\r\n\t\twindow.currentPage = window.currentPage - 1; // Decrement page number and return it\r\n\t\t} \r\n\t\twindow.prevButton.style.display = window.currentPage > 1 ? 'inline-flex' : 'none';\r\n\t\tif(window.currentPage > 1 && window.refreshIfNotFirstPage && window.reloadButton) {\r\n\t\t\twindow.refreshIfNotFirstPage.style.display = 'inline-flex';\r\n\t\t\twindow.reloadButton.style.display = 'none';\r\n\t\t} else {\r\n\t\t\twindow.refreshIfNotFirstPage.style.display = 'none';\r\n\t\t\twindow.reloadButton.style.display = 'inline-flex';\r\n\t\t}\r\n\t\tif (parseInt(window.currentPage) === (parseInt(window.lastPage) + 1)) {\t\r\n\t\t\twindow.nextButton.style.display = 'none';\r\n\t\t} else {\r\n\t\t\twindow.nextButton.style.display = 'inline-flex';\r\n\t\t}\r\n\t\treturn window.currentPage\r\n\t}\r\n\t\r\n\twindow.onload = function() {\r\n\t\twindow.nextButton = document.getElementById(\"nextPageButton\");\r\n\t\twindow.prevButton = document.getElementById(\"previousPageButton\");\r\n\t\twindow.reloadButton = document.getElementById(\"reload\");\r\n\t\twindow.refreshIfNotFirstPage = document.getElementById(\"refreshIfNotFirstPage\");\r\n\t\tif(window.refreshIfNotFirstPage){\r\n\t\t\twindow.refreshIfNotFirstPage.style.display = 'none';\r\n\t\t}\r\n\t\tif (window.currentPage == 1 && window.prevButton) {\r\n\t\t\twindow.prevButton.style.display = \"none\" ;\r\n\t\t}\t\r\n\t\tlet body = document.getElementById(\"tableContainer\")\r\n\t\tif (body) {\r\n\t\t\twindow.lastPage = body.getAttribute(\"last-page\")\r\n\t\t}\r\n\t\tlet showFileStatus = false\r\n\t\tconst buttonText = document.getElementById(\"showFileStatus\");\r\n\t\tif (buttonText) {\r\n\t\t\tbuttonText.innerHTML = \"Show File Status\";\r\n\t\t\tbuttonText.addEventListener(\"click\", function() {\r\n\t\t\t\tshowFileStatus = !showFileStatus\r\n\t\t\t\tconst fileStatus = document.getElementById(\"fileStatus\");\r\n\t\t\t\tif (showFileStatus) {\r\n\t\t\t\t\tbuttonText.innerHTML = \"Hide File Status\";\r\n\t\t\t\t\tfileStatus.style.display = \"block\";\r\n\t\t\t\t} else {\r\n\t\t\t\t\tif (fileStatus) {\r\n\t\t\t\t\t\tfileStatus.style.display = \"none\";\r\n\t\t\t\t\t}\r\n\t\t\t\t\tbuttonText.innerHTML = \"Show File Status\";\r\n\t\t\t\t}\r\n\t\t\t});\r\n\t\t}\r\n\t}\r\n\t\t\r\n\t</script><div class=\"buttons\"><div id=\"fileStatus\"></div><div><sl-button id=\"showFileStatus\" variant=\"primary\" hx-get=\"/getLogsPath\" hx-target=\"#fileStatus\"></sl-button></div><sl-button id=\"reload\" variant=\"primary\" hx-headers=\"{&#34;Cache-Control&#34;:&#34;no-cache&#34;}\" hx-get=\"/logs\" hx-target=\"#tableContainer\">Reload\r</sl-button> ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, reloadPage())
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<sl-button onclick=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var8 templ.ComponentScript = reloadPage()
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8.Call)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" id=\"refreshIfNotFirstPage\" variant=\"primary\" oncli>Refresh\r</sl-button></div><div id=\"tableContainer\" last-page=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -310,8 +337,8 @@ func Table(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var8 = []any{bold()}
-		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var8...)
+		var templ_7745c5c3_Var9 = []any{bold()}
+		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var9...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -319,7 +346,7 @@ func Table(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ.CSSClasses(templ_7745c5c3_Var8).String()))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ.CSSClasses(templ_7745c5c3_Var9).String()))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -337,8 +364,8 @@ func Table(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var9 = []any{th()}
-			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var9...)
+			var templ_7745c5c3_Var10 = []any{th()}
+			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var10...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -346,7 +373,7 @@ func Table(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ.CSSClasses(templ_7745c5c3_Var9).String()))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ.CSSClasses(templ_7745c5c3_Var10).String()))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -359,12 +386,12 @@ func Table(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var10 string
-				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(entry.UniqueId)
+				var templ_7745c5c3_Var11 string
+				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(entry.UniqueId)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 301, Col: 50}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 320, Col: 50}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -372,23 +399,10 @@ func Table(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var11 string
-				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(entry.TimeStamp)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 302, Col: 66}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</td><td>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
 				var templ_7745c5c3_Var12 string
-				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Type)
+				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(entry.TimeStamp)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 303, Col: 23}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 321, Col: 66}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 				if templ_7745c5c3_Err != nil {
@@ -399,9 +413,9 @@ func Table(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var13 string
-				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Event)
+				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Type)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 304, Col: 24}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 322, Col: 23}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 				if templ_7745c5c3_Err != nil {
@@ -412,9 +426,9 @@ func Table(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var14 string
-				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Status)
+				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Event)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 305, Col: 25}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 323, Col: 24}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 				if templ_7745c5c3_Err != nil {
@@ -425,11 +439,24 @@ func Table(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var15 string
-				templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Source)
+				templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Status)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 306, Col: 25}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 324, Col: 25}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</td><td>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var16 string
+				templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Source)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 325, Col: 25}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -437,12 +464,12 @@ func Table(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var16 string
-				templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Message)
+				var templ_7745c5c3_Var17 string
+				templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Message)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 307, Col: 49}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\hello.templ`, Line: 326, Col: 49}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
