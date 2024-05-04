@@ -29,23 +29,6 @@ css h3() {
 	text-align: center;
 }
 
-script buttonClick(mode string) {
-	if(	usernameState == "" || passwordState == ""){
-		spanValidation.style.display = "block"
-		return
-	}
-	spanValidation.style.display = "none"
-	if (mode == "DEV"){
-		const url = new URL('http://localhost:3000');  // replace with your URL
-  		url.searchParams.append('user', 'true');
-  		window.location.href = url.href;
-	} else {
-		const url = new URL('https://analytics.myrotaryprojects.org');  // replace with your URL
-  		url.searchParams.append('user', 'secret');
-  		window.location.href = url.href;
-	}
-}
-
 templ LoginPage(mode string) {
 	<style type="text/css">
 		span {
@@ -68,6 +51,36 @@ templ LoginPage(mode string) {
 		passwordState = event.target.value
 	})
 	const spanValidation = document.getElementById('spanValidation');
+
+	const submit = document.getElementById('submit');
+	submit.addEventListener('click', async(event) => {
+	if (usernameState == "" || passwordState == "") {
+	spanValidation.style.display = "block";
+	return;
+	}
+	spanValidation.style.display = "none";
+	const url = window.location.hostname === "localhost" ? "http://localhost:3000" : "https://analytics.myrotaryprojects.org";
+	try {
+		let response = await fetch(url + "/authorize", {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			user: usernameState,
+			password: passwordState
+		})
+		});
+		response = await response.json();
+		if (response.status == "success") {
+			window.location.href = url ;
+		} else {
+			alert(response.message)
+		}
+	} catch (error) {
+		console.error(error);
+	}
+	})
 });
 </script>
 	<html>
@@ -83,7 +96,7 @@ templ LoginPage(mode string) {
 				<h3 class={ h3() }>Rotary Analytics</h3>
 				<sl-input id="username" label="Username" help-text="Rotary super user email" clearable required></sl-input>
 				<sl-input id="password" label="Password" type="password" password-toggle required></sl-input>
-				<sl-button onClick={ buttonClick(mode) } variant="primary">Submit</sl-button>
+				<sl-button id="submit" variant="primary">Submit</sl-button>
 				<span id="spanValidation">Please fill in all fields</span>
 			</div>
 		</body>

@@ -126,16 +126,8 @@ templ Home(fileStatus string, LogEntries []pkg.RotaryLog, lastPage int, contents
  	 }
 	</style>
 	<script type="text/javascript">
-	// add event listener to the window object to listen for the load event so you can have multiple listeners. - do not do window.onload
+		// add event listener to the window object to listen for the load event so you can have multiple listeners. - do not do window.onload
 		window.addEventListener("load", function () {
-		const params = new URLSearchParams(window.location.search);
-		if (!params.has("user")) {
-			if (window.location.hostname === "localhost") {
-			window.location.replace("http://localhost:3000/login");
-			} else {
-			window.location.replace("https://analytics.myrotaryprojects.org/login");
-			}
-		}
 		setTimeout(function () {
 			document.getElementById("appBody").style.opacity = "1";
 		}, 1000);
@@ -223,6 +215,7 @@ templ tablehead(LogEntries []pkg.RotaryLog, lastPage int, contents templ.Compone
 		flex-direction: row;
 		justify-content: center;
 		gap: .3rem;
+		flex-wrap: wrap;
 	}
 	</style>
 	<script type="text/javascript">
