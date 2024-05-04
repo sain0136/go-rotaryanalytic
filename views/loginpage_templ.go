@@ -58,29 +58,6 @@ func h3() templ.CSSClass {
 	}
 }
 
-func buttonClick(mode string) templ.ComponentScript {
-	return templ.ComponentScript{
-		Name: `__templ_buttonClick_9818`,
-		Function: `function __templ_buttonClick_9818(mode){if(	usernameState == "" || passwordState == ""){
-		spanValidation.style.display = "block"
-		return
-	}
-	spanValidation.style.display = "none"
-	if (mode == "DEV"){
-		const url = new URL('http://localhost:3000');  // replace with your URL
-  		url.searchParams.append('user', 'true');
-  		window.location.href = url.href;
-	} else {
-		const url = new URL('https://analytics.myrotaryprojects.org');  // replace with your URL
-  		url.searchParams.append('user', 'secret');
-  		window.location.href = url.href;
-	}
-}`,
-		Call:       templ.SafeScript(`__templ_buttonClick_9818`, mode),
-		CallInline: templ.SafeScriptInline(`__templ_buttonClick_9818`, mode),
-	}
-}
-
 func LoginPage(mode string) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
@@ -94,7 +71,7 @@ func LoginPage(mode string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<style type=\"text/css\">\r\n\t\tspan {\r\n\t\t\tcolor: red;\r\n\t\t\tmargin-top: 5px;\r\n\t\t\tdisplay: none;\r\n\t\t}\r\n\t</style><script type=\"text/javascript\">\r\n\tlet usernameState = ''\r\n\tlet passwordState = ''\r\n\tlet reqValidation =  false \r\n\tdocument.addEventListener('DOMContentLoaded', (event) => {\r\n\tconst username = document.getElementById('username');\r\n\tusername.addEventListener('sl-input', event => {\r\n\t\tusernameState = event.target.value\r\n\t})\r\n\tconst password = document.getElementById('password');\r\n\tpassword.addEventListener('sl-input', event => {\r\n\t\tpasswordState = event.target.value\r\n\t})\r\n\tconst spanValidation = document.getElementById('spanValidation');\r\n});\r\n</script><html><head><link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/light.css\"><script type=\"module\" src=\"https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js\"></script><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>MyRotary Analytics</title></head>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<style type=\"text/css\">\r\n\t\tspan {\r\n\t\t\tcolor: red;\r\n\t\t\tmargin-top: 5px;\r\n\t\t\tdisplay: none;\r\n\t\t}\r\n\t</style><script type=\"text/javascript\">\r\n\tlet usernameState = ''\r\n\tlet passwordState = ''\r\n\tlet reqValidation =  false \r\n\tdocument.addEventListener('DOMContentLoaded', (event) => {\r\n\tconst username = document.getElementById('username');\r\n\tusername.addEventListener('sl-input', event => {\r\n\t\tusernameState = event.target.value\r\n\t})\r\n\tconst password = document.getElementById('password');\r\n\tpassword.addEventListener('sl-input', event => {\r\n\t\tpasswordState = event.target.value\r\n\t})\r\n\tconst spanValidation = document.getElementById('spanValidation');\r\n\r\n\tconst submit = document.getElementById('submit');\r\n\tsubmit.addEventListener('click', async(event) => {\r\n\tif (usernameState == \"\" || passwordState == \"\") {\r\n\tspanValidation.style.display = \"block\";\r\n\treturn;\r\n\t}\r\n\tspanValidation.style.display = \"none\";\r\n\tconst url = window.location.hostname === \"localhost\" ? \"http://localhost:3000\" : \"https://analytics.myrotaryprojects.org\";\r\n\ttry {\r\n\t\tlet response = await fetch(url + \"/authorize\", {\r\n\t\tmethod: 'POST',\r\n\t\theaders: {\r\n\t\t\t'Content-Type': 'application/json'\r\n\t\t},\r\n\t\tbody: JSON.stringify({\r\n\t\t\tuser: usernameState,\r\n\t\t\tpassword: passwordState\r\n\t\t})\r\n\t\t});\r\n\t\tresponse = await response.json();\r\n\t\tif (response.status == \"success\") {\r\n\t\t\twindow.location.href = url ;\r\n\t\t} else {\r\n\t\t\talert(response.message)\r\n\t\t}\r\n\t} catch (error) {\r\n\t\tconsole.error(error);\r\n\t}\r\n\t})\r\n});\r\n</script><html><head><link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/light.css\"><script type=\"module\" src=\"https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js\"></script><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>MyRotary Analytics</title></head>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -145,24 +122,7 @@ func LoginPage(mode string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">Rotary Analytics</h3><sl-input id=\"username\" label=\"Username\" help-text=\"Rotary super user email\" clearable required></sl-input> <sl-input id=\"password\" label=\"Password\" type=\"password\" password-toggle required></sl-input> ")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, buttonClick(mode))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<sl-button onClick=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var5 templ.ComponentScript = buttonClick(mode)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5.Call)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" variant=\"primary\">Submit</sl-button> <span id=\"spanValidation\">Please fill in all fields</span></div></body></html>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">Rotary Analytics</h3><sl-input id=\"username\" label=\"Username\" help-text=\"Rotary super user email\" clearable required></sl-input> <sl-input id=\"password\" label=\"Password\" type=\"password\" password-toggle required></sl-input> <sl-button id=\"submit\" variant=\"primary\">Submit</sl-button> <span id=\"spanValidation\">Please fill in all fields</span></div></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
