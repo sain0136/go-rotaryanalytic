@@ -2,7 +2,6 @@ package views
 
 import (
 	"github.com/sain0136/go-rotaryanalytic/pkg"
-	"strconv"
 )
 
 css thClass() {
@@ -40,42 +39,39 @@ templ LogTable(LogEntries []pkg.RotaryLog , lastPage int) {
 	}
 	.no-wrap {
 		white-space: nowrap;
-	}
+	}	
 	.small-column{
 		width: 8rem;
 	}
 	</style>
-	<div id="tableContainer" last-page={ strconv.Itoa(lastPage) }>
-		<span class={ bold() }>Raw Logs:</span>
-		if LogEntries == nil {
-			<span>Error: LogEntries could not be processed</span>
-		} else {
-			<table id="table">
-				<thead>
-					<tr class={ th() }>
-						<th class="column-to-hide" colspan="1">Id</th>
-						<th class="column-to-hide-mobile" colspan="1">Timestamp</th>
-						<th class="small-column" colspan="1">Type</th>
-						<th class="small-column" colspan="1">Event</th>
-						<th class="small-column" colspan="1">Status</th>
-						<th class="column-to-hide-mobile small-column" colspan="1">Source</th>
-						<th class="column-to-hide" colspan="1">Message</th>
+	if LogEntries == nil {
+		<span>Error: LogEntries could not be processed</span>
+	} else {
+		<table id="table">
+			<thead>
+				<tr class={ th() }>
+					<th class="column-to-hide" colspan="1">Id</th>
+					<th class="column-to-hide-mobile" colspan="1">Timestamp</th>
+					<th class="small-column" colspan="1">Type</th>
+					<th class="small-column" colspan="1">Event</th>
+					<th class="small-column" colspan="1">Status</th>
+					<th class="column-to-hide-mobile small-column" colspan="1">Source</th>
+					<th class="column-to-hide" colspan="1">Message</th>
+				</tr>
+			</thead>
+			<tbody id="tableBody">
+				for _, entry := range LogEntries {
+					<tr class="trow">
+						<td class="column-to-hide">{ entry.UniqueId }</td>
+						<td class="column-to-hide-mobile no-wrap">{ entry.TimeStamp }</td>
+						<td>{ entry.Type }</td>
+						<td>{ entry.Event }</td>
+						<td>{ entry.Status }</td>
+						<td class="column-to-hide-mobile">{ entry.Source }</td>
+						<td class="column-to-hide">{ entry.Message }</td>
 					</tr>
-				</thead>
-				<tbody id="tableBody">
-					for _, entry := range LogEntries {
-						<tr class="trow">
-							<td class="column-to-hide">{ entry.UniqueId }</td>
-							<td class="column-to-hide-mobile no-wrap">{ entry.TimeStamp }</td>
-							<td>{ entry.Type }</td>
-							<td>{ entry.Event }</td>
-							<td>{ entry.Status }</td>
-							<td class="column-to-hide-mobile">{ entry.Source }</td>
-							<td class="column-to-hide">{ entry.Message }</td>
-						</tr>
-					}
-				</tbody>
-			</table>
-		}
-	</div>
+				}
+			</tbody>
+		</table>
+	}
 }

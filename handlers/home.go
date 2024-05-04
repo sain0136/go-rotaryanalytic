@@ -7,10 +7,11 @@ import (
 
 	"github.com/a-h/templ"
 	"github.com/sain0136/go-rotaryanalytic/pkg"
+	"github.com/sain0136/go-rotaryanalytic/utils"
 	"github.com/sain0136/go-rotaryanalytic/views"
 )
 
-func HomeHandler(mode string) http.Handler {
+func HomeHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		filePath, err := pkg.GetEnvStatus()
 		if err != nil {
@@ -18,17 +19,27 @@ func HomeHandler(mode string) http.Handler {
 		}
 		rawLogEntries, writeErr, lastPage := pkg.ReadLogFile(filePath, 1)
 		var component templ.Component
+		content := views.LogTable(rawLogEntries, lastPage)
 		if writeErr != nil {
-			component = views.Hello("Peter Ivan Labelle", filePath, nil, mode, lastPage)
+			component = views.Home(filePath, nil, lastPage, content)
 		} else {
-			component = views.Hello("Peter Ivan Labelle", filePath, rawLogEntries, mode, lastPage)
+			component = views.Home(filePath, rawLogEntries, lastPage, content)
 		}
 		templ.Handler(component).ServeHTTP(w, r)
 	})
 }
 
-func LoginPageHandler(mode string) http.Handler {
+func LoginPageHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		mode, err := utils.GetConfig(utils.DEV_MODE)
+		if err != nil {
+			mode = "PROD"
+		}
+		if mode == "True" {
+			mode = "DEV"
+		} else {
+			mode = "PROD"
+		}
 		component := views.LoginPage(mode)
 		templ.Handler(component).ServeHTTP(w, r)
 	})

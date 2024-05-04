@@ -1,0 +1,323 @@
+package views
+
+import (
+	"github.com/sain0136/go-rotaryanalytic/pkg"
+	"strconv"
+)
+
+css body() {
+	background-color: white;
+	margin: 0;
+}
+
+css title() {
+	color: black;
+	font-size: 1.5rem;
+	font-weight: bold;
+	text-align: center;
+}
+
+css th() {
+	background-color: lightblue;
+	font-weight: bold;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
+}
+
+css main() {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	padding: 1rem;
+}
+
+css bold() {
+	font-weight: bold;
+}
+
+css button() {
+	background-color: lightblue;
+	border: none;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 1rem;
+	border-radius: 12px;
+	cursor: pointer;
+}
+
+css subheader() {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	padding: 1rem;
+	align-items: center;
+}
+
+css sessionsTab() {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	padding: 1rem;
+}
+
+script reloadPage() {
+	window.location.reload();
+}
+
+templ Home(fileStatus string, LogEntries []pkg.RotaryLog, lastPage int, contents templ.Component) {
+	<style type="text/css">
+	img {
+		height: 50px;
+		width: 50px;
+	}
+	.tabs {
+		width: 100%;
+	}
+	.header{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1rem;
+		border-bottom: 1px solid lightblue;
+	}
+	.sessions {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 1rem;
+		margin: 2rem 0;
+		font-size: 3rem;
+		font-weight: bold;
+	}
+	.no-wrap {
+		white-space: nowrap;
+	}
+	.settings {
+		cursor: pointer;
+	}
+
+	.settings:hover {
+		color: lightblue;
+	}
+	.icons {
+		display: flex;
+		flex-direction: row;
+		gap: 1rem;
+	}
+	a {
+    color: black;      
+    text-decoration: none; 
+	}
+	 #appBody {
+    	opacity: 0;
+    	transition: opacity 1s ease-in-out;
+ 	 }
+	</style>
+	<script type="text/javascript">
+	// add event listener to the window object to listen for the load event so you can have multiple listeners. - do not do window.onload
+		window.addEventListener("load", function () {
+		const params = new URLSearchParams(window.location.search);
+		if (!params.has("user")) {
+			if (window.location.hostname === "localhost") {
+			window.location.replace("http://localhost:3000/login");
+			} else {
+			window.location.replace("https://analytics.myrotaryprojects.org/login");
+			}
+		}
+		setTimeout(function () {
+			document.getElementById("appBody").style.opacity = "1";
+		}, 1000);
+		});
+  	</script>
+	<html>
+		<head>
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/light.css"/>
+			<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js"></script>
+			<script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
+			<script src="https://kit.fontawesome.com/fa78fc50e4.js" crossorigin="anonymous"></script>
+			<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.10/dist/cdn.min.js"></script>
+			<link rel="stylesheet" href="https://assets.ubuntu.com/v1/vanilla-framework-version-4.10.0.min.css"/>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>MyRotary Analytics</title>
+		</head>
+		@Header()
+		<body id="appBody" class={ body() }>
+			<div class={ main() }>
+				<sl-tab-group class="tabs">
+					<sl-tab slot="nav" panel="logs">Rotary Logs</sl-tab>
+					<sl-tab slot="nav" panel="sessions">Sessions</sl-tab>
+					<sl-tab-panel name="logs">
+						@tablehead(LogEntries, lastPage, contents)
+					</sl-tab-panel>
+					<sl-tab-panel name="sessions">
+						<div class="sessions">
+							Under Construction
+						</div>
+					</sl-tab-panel>
+				</sl-tab-group>
+			</div>
+		</body>
+	</html>
+}
+
+templ Header() {
+	<header class="header">
+		<div class={ title() }>Myrotaryprojects.org Analytics </div>
+		<div class="icons">
+			<a href="https://myrotaryprojects.org" title="MyRotaryProjects Homepage"><i class="settings fa-solid fa-house fa-lg"></i></a>
+			<a title="Under Construction"><i class="settings fa-solid fa-gear fa-lg"></i></a>
+		</div>
+	</header>
+}
+
+templ tablehead(LogEntries []pkg.RotaryLog, lastPage int, contents templ.Component) {
+	<style type="text/css">
+	@media (max-width: 990px) {
+	.column-to-hide {
+      display: none;
+    }
+	}
+	@media (max-width: 600px) {
+	.column-to-hide-mobile {
+	  display: none;
+	}
+	}
+	.trow:hover {
+		background-color: #ddd;
+		cursor: pointer;
+	}
+	#table td, #table th {
+ 	 border: 1px solid #ddd;
+ 	 padding: 8px;
+	}
+	.no-wrap {
+		white-space: nowrap;
+	}
+	.buttons {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		padding: 1.5rem;
+		gap: 2rem;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+	.small-column{
+		width: 8rem;
+	}
+	.buttonGroup {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		gap: .3rem;
+	}
+	</style>
+	<script type="text/javascript">
+
+	window.currentPage = 1
+	window.addEventListener('load', function() {
+    window.nextButton = document.getElementById("nextPageButton");
+		window.prevButton = document.getElementById("previousPageButton");
+		window.reloadButton = document.getElementById("reload");
+		window.refreshIfNotFirstPage = document.getElementById("refreshIfNotFirstPage");
+		window.pageBadge = document.getElementById("pageBadge");
+		if(window.pageBadge) {
+			window.pageBadge.innerHTML = "Page " + window.currentPage;
+		}
+		if(window.refreshIfNotFirstPage){
+			window.refreshIfNotFirstPage.style.display = 'none';
+		}
+		if (window.currentPage == 1 && window.prevButton) {
+			window.prevButton.style.display = "none" ;
+		}	
+		let body = document.getElementById("tableContainer")
+		if (body) {
+			window.lastPage = body.getAttribute("last-page")
+		}
+		let showFileStatus = false
+		const buttonText = document.getElementById("showFileStatus");
+		if (buttonText) {
+			buttonText.innerHTML = "Show File Status";
+			buttonText.addEventListener("click", function() {
+				showFileStatus = !showFileStatus
+				const fileStatus = document.getElementById("fileStatus");
+				if (showFileStatus) {
+					buttonText.innerHTML = "Hide File Status";
+					fileStatus.style.display = "block";
+				} else {
+					if (fileStatus) {
+						fileStatus.style.display = "none";
+					}
+					buttonText.innerHTML = "Show File Status";
+				}
+			});
+		}
+});
+	window.getPageNumber = function(action) {
+		if (action == "next") {
+		window.currentPage = window.currentPage + 1; // Increment page number and return it
+		}
+		if (action == "prev" && window.currentPage > 1) {
+		window.currentPage = window.currentPage - 1; // Decrement page number and return it
+		} 
+		if(window.pageBadge) {
+			window.pageBadge.innerHTML = "Page " + window.currentPage  + `${window.lastPage ? ' of ' : ''} ${window.lastPage ?? ''}`;
+		}
+		window.prevButton.style.display = window.currentPage > 1 ? 'inline-flex' : 'none';
+		if(window.currentPage > 1 && window.refreshIfNotFirstPage && window.reloadButton) {
+			window.refreshIfNotFirstPage.style.display = 'inline-flex';
+			window.reloadButton.style.display = 'none';
+		} else {
+			window.refreshIfNotFirstPage.style.display = 'none';
+			window.reloadButton.style.display = 'inline-flex';
+		}
+		if (parseInt(window.currentPage) === (parseInt(window.lastPage) + 1)) {	
+			window.nextButton.style.display = 'none';
+		} else {
+			window.nextButton.style.display = 'inline-flex';
+		}
+		return window.currentPage
+	}
+
+		
+	</script>
+	<div>
+		<div class="buttonGroup">
+			<span x-show="$store.state.lastPage"></span>
+		</div>
+	</div>
+	<div class="buttons">
+		<div class="buttonGroup">
+			<sl-button id="previousPageButton" variant="default" hx-target="#tableContainer" hx-get="/logs" hx-vals="js:{page: getPageNumber('prev')}">Previous Page</sl-button>
+			<sl-button id="nextPageButton" variant="default" hx-target="#tableContainer" hx-get="/logs" hx-vals="js:{page: getPageNumber('next')}">Next Page</sl-button>
+			<sl-badge id="pageBadge" variant="neutral"></sl-badge>
+		</div>
+		<div id="fileStatus"></div>
+		<div>
+			<sl-button id="showFileStatus" variant="primary" hx-get="/getLogsPath" hx-target="#fileStatus"></sl-button>
+		</div>
+		<sl-button id="reload" variant="primary" hx-headers='{"Cache-Control":"no-cache"}' hx-get="/logs" hx-target="#tableContainer">
+			Reload
+		</sl-button>
+		<sl-button onclick={ reloadPage() } id="refreshIfNotFirstPage" variant="primary">
+			Reload
+		</sl-button>
+	</div>
+	<div id="tableContainer" last-page={ strconv.Itoa(lastPage) }>
+		<span class={ bold() }>Raw Logs:</span>
+		@contents
+	</div>
+}
