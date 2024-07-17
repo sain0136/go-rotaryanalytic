@@ -13,6 +13,8 @@ import (
 	"github.com/sain0136/go-rotaryanalytic/utils"
 )
 
+const logsPerPage int = 10 // Number of logs to display per page -check doc.md for more information
+
 type LogEntry struct {
 	Level     int       `json:"level"`
 	Time      int64     `json:"time"`
@@ -104,10 +106,16 @@ func ReadLogFile(path string, page int) ([]RotaryLog, int, error) {
 		errorMessage := fmt.Errorf("error return: %w", err)
 		return nil, 0, errorMessage
 	}
-	const logsPerPage = 10
-	start := (page - 1) * logsPerPage
-	end := start + logsPerPage
-	lastPage := len(marshaledLogs) / logsPerPage
+	logsPerPageVar := logsPerPage // Assign constant to a variable
+
+	start := (page - 1) * logsPerPageVar
+	end := start + logsPerPageVar
+	lastPage := len(marshaledLogs) / logsPerPageVar
+	remainder := len(marshaledLogs) % logsPerPageVar
+	if remainder > 0 {
+		lastPage++
+	}
+	println("remainder: ", remainder)
 	// Useful GO syntax, its called slicing a slice
 	return marshaledLogs[start:end], lastPage, nil
 }

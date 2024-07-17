@@ -6,6 +6,12 @@ This project is a Go-based analytics platform for rotary organizations, designed
 
 ## Features
 
+## Stack
+
+Templ is the template engine for Go Rotary Analytics. Remember to install the Go Extension before using it and also run templ generate command to see changes in the generated files.
+
+HTMX, the Hypertext Markup Language Extensions, is a JavaScript library for building dynamic web applications is used in the project for Server-Side Rendering.
+
 ## Debug
 
 Install the Go Extension: Make sure you have the Go extension installed in VS Code. You can find it in the Extensions Marketplace.
