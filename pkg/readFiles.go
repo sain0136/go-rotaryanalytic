@@ -22,14 +22,15 @@ type LogEntry struct {
 }
 
 type RotaryLog struct {
-	UniqueId  string `json:"uniqueId"`
-	Type      string `json:"type"`
-	Event     string `json:"event"`
-	Status    string `json:"status"`
-	Source    string `json:"source"`
-	Target    string `json:"target"`
-	Message   string `json:"message"`
-	TimeStamp string `json:"timeStamp"`
+	UniqueId      string `json:"uniqueId"`
+	Type          string `json:"type"`
+	Event         string `json:"event"`
+	Status        string `json:"status"`
+	Source        string `json:"source"`
+	Target        string `json:"target"`
+	Message       string `json:"message"`
+	CustomMessage string `json:"customMessage"`
+	TimeStamp     string `json:"timeStamp"`
 }
 
 // String returns a string representation of the LogEntry struct.
@@ -47,19 +48,8 @@ func (l LogEntry) String() string {
 }
 
 func (r RotaryLog) String() string {
-	return fmt.Sprintf("UniqueId: %s, Type: %s, Event: %s, Status: %s, Source: %s, Target: %s, Message: %s, TimeStamp: %s",
-		r.UniqueId, r.Type, r.Event, r.Status, r.Source, r.Target, r.Message, r.TimeStamp)
-}
-
-type TypeOfLog struct {
-	Type        string `json:"type"`
-	LoginStatus string `json:"loginStatus"`
-}
-
-type User struct {
-	UserId int    `json:"userId"`
-	Email  string `json:"email"`
-	Name   string `json:"name"`
+	return fmt.Sprintf("UniqueId: %s, Type: %s, Event: %s, Status: %s, Source: %s, Target: %s, Message: %s, CustomMessage: %s, TimeStamp: %s",
+		r.UniqueId, r.Type, r.Event, r.Status, r.Source, r.Target, r.Message, r.CustomMessage, r.TimeStamp)
 }
 
 func GetEnvStatus() (string, error) {
@@ -89,12 +79,12 @@ func GetEnvStatus() (string, error) {
 	return "No path found", nil
 }
 
-func ReadLogFile(path string, page int) ([]RotaryLog, error, int) {
+func ReadLogFile(path string, page int) ([]RotaryLog, int, error) {
 	logs, err := os.Open(path)
 	if err != nil {
 		errorMessage := fmt.Errorf("error return: %w", err)
 		log.Print(errorMessage)
-		return nil, errorMessage, 0
+		return nil, 0, errorMessage
 	}
 	defer logs.Close()
 
@@ -106,20 +96,20 @@ func ReadLogFile(path string, page int) ([]RotaryLog, error, int) {
 	}
 	if err := scanner.Err(); err != nil {
 		errorMessage := fmt.Errorf("error return: %w", err)
-		return nil, errorMessage, 0
+		return nil, 0, errorMessage
 	}
 
 	marshaledLogs, err := marshalLogs(rawLogs)
 	if err != nil {
 		errorMessage := fmt.Errorf("error return: %w", err)
-		return nil, errorMessage, 0
+		return nil, 0, errorMessage
 	}
 	const logsPerPage = 10
 	start := (page - 1) * logsPerPage
 	end := start + logsPerPage
 	lastPage := len(marshaledLogs) / logsPerPage
-	// Cool go syntax
-	return marshaledLogs[start:end], nil, lastPage
+	// Useful GO syntax, its called slicing a slice
+	return marshaledLogs[start:end], lastPage, nil
 }
 
 func marshalLogs(logs []string) ([]RotaryLog, error) {

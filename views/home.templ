@@ -219,10 +219,9 @@ templ tablehead(LogEntries []pkg.RotaryLog, lastPage int, contents templ.Compone
 	}
 	</style>
 	<script type="text/javascript">
-
-	window.currentPage = 1
-	window.addEventListener('load', function() {
-    window.nextButton = document.getElementById("nextPageButton");
+		window.currentPage = 1
+		window.addEventListener('load', function() {
+		window.nextButton = document.getElementById("nextPageButton");
 		window.prevButton = document.getElementById("previousPageButton");
 		window.reloadButton = document.getElementById("reload");
 		window.refreshIfNotFirstPage = document.getElementById("refreshIfNotFirstPage");

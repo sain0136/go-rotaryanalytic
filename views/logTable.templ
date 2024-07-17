@@ -57,6 +57,7 @@ templ LogTable(LogEntries []pkg.RotaryLog , lastPage int) {
 					<th class="small-column" colspan="1">Status</th>
 					<th class="column-to-hide-mobile small-column" colspan="1">Source</th>
 					<th class="column-to-hide" colspan="1">Message</th>
+					<th class="column-to-hide" colspan="1">Details</th>
 				</tr>
 			</thead>
 			<tbody id="tableBody">
@@ -69,6 +70,7 @@ templ LogTable(LogEntries []pkg.RotaryLog , lastPage int) {
 						<td>{ entry.Status }</td>
 						<td class="column-to-hide-mobile">{ entry.Source }</td>
 						<td class="column-to-hide">{ entry.Message }</td>
+						<td class="column-to-hide">{ entry.CustomMessage }</td>
 					</tr>
 				}
 			</tbody>
