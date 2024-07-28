@@ -41,7 +41,7 @@ func HomeHandler() http.Handler {
 		if err != nil {
 			fmt.Println(err)
 		}
-		rawLogEntries, writeErr, lastPage := pkg.ReadLogFile(filePath, 1)
+		rawLogEntries, lastPage, writeErr := pkg.ReadLogFile(filePath, 1)
 		content := views.LogTable(rawLogEntries, lastPage)
 		if writeErr != nil {
 			component = views.Home(filePath, nil, lastPage, content)
@@ -73,8 +73,7 @@ func LogsTable(w http.ResponseWriter, r *http.Request, page int) http.Handler {
 	if err != nil {
 		fmt.Println(err)
 	}
-	rawLogEntries, writeErr, lastPage := pkg.ReadLogFile(filePath, page)
-
+	rawLogEntries, lastPage, writeErr := pkg.ReadLogFile(filePath, page)
 	var component templ.Component
 	if writeErr != nil {
 		component = views.LogTable(nil, lastPage)
