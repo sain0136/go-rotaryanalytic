@@ -52,7 +52,7 @@ func LogTable(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<style type=\"text/css\">\r\n\t@media (max-width: 900px) {\r\n\t.column-to-hide {\r\n      display: none;\r\n    }\r\n\t}\r\n\t@media (max-width: 600px) {\r\n\t.column-to-hide-mobile {\r\n\t  display: none;\r\n\t}\r\n\t}\r\n\t.trow:hover {\r\n\t\tbackground-color: #ddd;\r\n\t\tcursor: pointer;\r\n\t}\r\n\r\n\t#table td, #table th {\r\n \t border: 1px solid #ddd;\r\n \t padding: 8px;\r\n\t}\r\n\t.no-wrap {\r\n\t\twhite-space: nowrap;\r\n\t}\t\r\n\t.small-column{\r\n\t\twidth: 8rem;\r\n\t}\r\n\t</style>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<style type=\"text/css\">\r\n\t@media (max-width: 900px) {\r\n\t.column-to-hide {\r\n      display: none;\r\n    }\r\n\t}\r\n\t@media (max-width: 600px) {\r\n\t.column-to-hide-mobile {\r\n\t  display: none;\r\n\t}\r\n\t}\r\n\t.trow:hover {\r\n\t\tbackground-color: #ddd;\r\n\t\tcursor: pointer;\r\n\t}\r\n\t#table td, #table th {\r\n \t border: 1px solid #ddd;\r\n \t padding: 8px;\r\n\t}\r\n\t.no-wrap {\r\n\t\twhite-space: nowrap;\r\n\t}\t\r\n\t.small-column{\r\n\t\twidth: 8rem;\r\n\t}\r\n\t.expandable-text {\r\n\t\tposition: relative;\r\n\t}\r\n\t.text-preview {\r\n\t\tmax-height: 3.6em; /* Limit to 3 lines */\r\n\t\toverflow: hidden;\r\n\t\tposition: relative;\r\n\t\tbackground: linear-gradient(180deg, rgba(255,255,255,1) 60%, rgba(173,216,230,0) 100%); /* Light blue gradient */\r\n\t\tpadding-bottom: 1em; /* Padding to accommodate the gradient */\r\n\t}\r\n\t.text-full {\r\n\tdisplay: none;\r\n\t}\r\n\t.expand-link, .collapse-link {\r\n\tcolor: blue;\r\n\tcursor: pointer;\r\n\tdisplay: block;\r\n\tmargin-top: 5px;\r\n\t}\r\n\t</style><script type=\"text/javascript\">\r\n function attachExpandableTextListeners() {\r\n      const expandableElements = document.querySelectorAll('.expandable-text');\r\n\r\n      expandableElements.forEach(element => {\r\n        const expandLink = element.querySelector('.expand-link');\r\n        const collapseLink = element.querySelector('.collapse-link');\r\n        const textPreview = element.querySelector('.text-preview');\r\n        const textFull = element.querySelector('.text-full');\r\n\r\n        expandLink.addEventListener('click', function(event) {\r\n          event.preventDefault();\r\n          textPreview.style.display = 'none';\r\n          textFull.style.display = 'block';\r\n          expandLink.style.display = 'none';\r\n          collapseLink.style.display = 'block';\r\n        });\r\n\r\n        collapseLink.addEventListener('click', function(event) {\r\n          event.preventDefault();\r\n          textPreview.style.display = 'block';\r\n          textFull.style.display = 'none';\r\n          expandLink.style.display = 'block';\r\n          collapseLink.style.display = 'none';\r\n        });\r\n      });\r\n    }\r\n\r\n    document.addEventListener('DOMContentLoaded', function() {\r\n      attachExpandableTextListeners();\r\n    });\r\n\r\n\tdocument.body.addEventListener('htmx:afterSettle', function() {\r\n      attachExpandableTextListeners();\r\n    });\r\n\r\n\t</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -91,7 +91,7 @@ func LogTable(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(entry.UniqueId)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 65, Col: 49}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 120, Col: 49}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -104,7 +104,7 @@ func LogTable(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(entry.TimeStamp)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 66, Col: 65}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 121, Col: 65}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
@@ -117,7 +117,7 @@ func LogTable(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Type)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 67, Col: 22}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 122, Col: 22}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -130,7 +130,7 @@ func LogTable(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Event)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 68, Col: 23}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 123, Col: 23}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
@@ -143,7 +143,7 @@ func LogTable(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Status)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 69, Col: 24}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 124, Col: 24}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
@@ -156,7 +156,7 @@ func LogTable(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Source)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 70, Col: 54}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 125, Col: 54}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
@@ -169,7 +169,7 @@ func LogTable(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 				var templ_7745c5c3_Var9 string
 				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(entry.Message)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 71, Col: 48}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 126, Col: 48}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 				if templ_7745c5c3_Err != nil {
@@ -179,14 +179,37 @@ func LogTable(LogEntries []pkg.RotaryLog, lastPage int) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var10 string
-				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(entry.CustomMessage)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 72, Col: 54}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
+				if len(entry.CustomMessage) > 0 {
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"expandable-text\"><div class=\"text-preview\">")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					var templ_7745c5c3_Var10 string
+					templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(entry.CustomMessage)
+					if templ_7745c5c3_Err != nil {
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 130, Col: 53}
+					}
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"text-full\">")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					var templ_7745c5c3_Var11 string
+					templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(entry.CustomMessage)
+					if templ_7745c5c3_Err != nil {
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views\logTable.templ`, Line: 131, Col: 50}
+					}
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><a href=\"#\" class=\"expand-link\">Expand</a> <a href=\"#\" class=\"collapse-link\" style=\"display:none;\">Collapse</a></div>")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</td></tr>")
 				if templ_7745c5c3_Err != nil {

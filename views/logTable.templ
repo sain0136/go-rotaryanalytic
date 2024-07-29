@@ -32,7 +32,6 @@ templ LogTable(LogEntries []pkg.RotaryLog , lastPage int) {
 		background-color: #ddd;
 		cursor: pointer;
 	}
-
 	#table td, #table th {
  	 border: 1px solid #ddd;
  	 padding: 8px;
@@ -43,7 +42,63 @@ templ LogTable(LogEntries []pkg.RotaryLog , lastPage int) {
 	.small-column{
 		width: 8rem;
 	}
+	.expandable-text {
+		position: relative;
+	}
+	.text-preview {
+		max-height: 3.6em; /* Limit to 3 lines */
+		overflow: hidden;
+		position: relative;
+		background: linear-gradient(180deg, rgba(255,255,255,1) 60%, rgba(173,216,230,0) 100%); /* Light blue gradient */
+		padding-bottom: 1em; /* Padding to accommodate the gradient */
+	}
+	.text-full {
+	display: none;
+	}
+	.expand-link, .collapse-link {
+	color: blue;
+	cursor: pointer;
+	display: block;
+	margin-top: 5px;
+	}
 	</style>
+	<script type="text/javascript">
+ function attachExpandableTextListeners() {
+      const expandableElements = document.querySelectorAll('.expandable-text');
+
+      expandableElements.forEach(element => {
+        const expandLink = element.querySelector('.expand-link');
+        const collapseLink = element.querySelector('.collapse-link');
+        const textPreview = element.querySelector('.text-preview');
+        const textFull = element.querySelector('.text-full');
+
+        expandLink.addEventListener('click', function(event) {
+          event.preventDefault();
+          textPreview.style.display = 'none';
+          textFull.style.display = 'block';
+          expandLink.style.display = 'none';
+          collapseLink.style.display = 'block';
+        });
+
+        collapseLink.addEventListener('click', function(event) {
+          event.preventDefault();
+          textPreview.style.display = 'block';
+          textFull.style.display = 'none';
+          expandLink.style.display = 'block';
+          collapseLink.style.display = 'none';
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      attachExpandableTextListeners();
+    });
+
+	document.body.addEventListener('htmx:afterSettle', function() {
+      attachExpandableTextListeners();
+    });
+
+	</script>
 	if LogEntries == nil {
 		<span>Error: LogEntries could not be processed</span>
 	} else {
@@ -70,7 +125,16 @@ templ LogTable(LogEntries []pkg.RotaryLog , lastPage int) {
 						<td>{ entry.Status }</td>
 						<td class="column-to-hide-mobile">{ entry.Source }</td>
 						<td class="column-to-hide">{ entry.Message }</td>
-						<td class="column-to-hide">{ entry.CustomMessage }</td>
+						<td class="column-to-hide">
+						if len(entry.CustomMessage) > 0 {
+						<div class="expandable-text">
+						<div class="text-preview">{ entry.CustomMessage }</div>
+						<div class="text-full">{ entry.CustomMessage }</div>
+						<a href="#" class="expand-link">Expand</a>
+						<a href="#" class="collapse-link" style="display:none;">Collapse</a>
+						</div>
+						} 
+						</td>
 					</tr>
 				}
 			</tbody>
