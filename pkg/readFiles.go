@@ -110,12 +110,20 @@ func ReadLogFile(path string, page int) ([]RotaryLog, int, error) {
 
 	start := (page - 1) * logsPerPageVar
 	end := start + logsPerPageVar
+
+	// Ensure end does not exceed the length of marshaledLogs
+	if end > len(marshaledLogs) {
+		end = len(marshaledLogs)
+	}
+
 	lastPage := len(marshaledLogs) / logsPerPageVar
 	remainder := len(marshaledLogs) % logsPerPageVar
 	if remainder > 0 {
 		lastPage++
 	}
+
 	println("remainder: ", remainder)
+
 	// Useful GO syntax, its called slicing a slice
 	return marshaledLogs[start:end], lastPage, nil
 }
