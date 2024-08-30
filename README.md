@@ -46,7 +46,7 @@ git clone https://github.com/sain0136/go-rotaryanalytic.git
 2. Navigate to the cloned repository:
 
 ```bash
-cd go-rotaryanalyticgo
+cd go-rotaryanalytic
 ```
 
 3. Build and run the project:
