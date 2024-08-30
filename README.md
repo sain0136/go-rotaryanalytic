@@ -36,7 +36,7 @@ The Go Rotary Analytics Site is a Go-based analytics platform designed for rotar
 
 ### Installation
 
-1. Clone the repository:1. Clone the repository:
+1. Clone the repository:
 
 ```bash
 git clone https://github.com/sain0136/go-rotaryanalytic.git
