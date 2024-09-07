@@ -41,10 +41,10 @@ func HomeHandler() http.Handler {
 		if err != nil {
 			fmt.Println(err)
 		}
-		rawLogEntries, lastPage, writeErr := pkg.ReadLogFile(filePath, 1)
+		rawLogEntries, lastPage, readLogError := pkg.ReadLogFile(filePath, 1)
 		content := views.LogTable(rawLogEntries, lastPage)
-		if writeErr != nil {
-			component = views.Home(filePath, nil, lastPage, content)
+		if readLogError != nil {
+			component = views.ErrorPage(readLogError.Error())
 		} else {
 			component = views.Home(filePath, rawLogEntries, lastPage, content)
 		}
