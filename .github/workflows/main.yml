@@ -29,5 +29,6 @@ jobs:
             rm -rf rotaryanalytic
             cp /opt/apps/productionfiles/analytics/.env /opt/apps/go-rotaryanalytic/
             go build -o rotaryanalytic
+            sudo chcon -t bin_t /opt/apps/go-rotaryanalytic/cmd/rotaryanalytic
             sudo systemctl restart rotaryanalytic.service
           ENDSSH
