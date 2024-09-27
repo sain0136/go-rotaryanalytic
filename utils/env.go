@@ -10,11 +10,16 @@ import (
 	"github.com/joho/godotenv"
 )
 
-type envValue string
+type EnvValue string
 
 const (
-	DEV_MODE      envValue = "DEV_MODE"
-	BASE_LOG_PATH envValue = "BASE_LOG_PATH"
+	DEV_MODE       EnvValue = "DEV_MODE"
+	BASE_LOG_PATH  EnvValue = "BASE_LOG_PATH"
+	MYSQL_HOST     EnvValue = "MYSQL_HOST"
+	MYSQL_PORT     EnvValue = "MYSQL_PORT"
+	MYSQL_USER     EnvValue = "MYSQL_USER"
+	MYSQL_PASSWORD EnvValue = "MYSQL_PASSWORD"
+	MYSQL_DB_NAME  EnvValue = "MYSQL_DB_NAME"
 )
 
 func LoadEnv() error {
@@ -35,10 +40,10 @@ func LoadEnv() error {
 	return nil
 }
 
-func GetConfig(val envValue) (string, error) {
+func GetConfig(val EnvValue) (string, error) {
 	env, ok := os.LookupEnv(string(val))
 	if !ok {
-		return "", fmt.Errorf("Environment variable %s not found", val)
+		return "", fmt.Errorf("environment variable %s not found", val)
 	}
 	return env, nil
 }

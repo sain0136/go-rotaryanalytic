@@ -260,7 +260,7 @@ templ tablehead(LogEntries []pkg.RotaryLog, lastPage int, contents templ.Compone
 		if (body) {
 			window.lastPage = body.getAttribute("last-page")
 		}
-		if (window.lastPage && parseInt(window.lastPage) == 0) {
+		if (window.lastPage && parseInt(window.lastPage) <= 1) {
 			window.nextButton.style.display = "none";
 		}
 		if (window.pageBadge && parseInt(window.lastPage) !== 0) {
