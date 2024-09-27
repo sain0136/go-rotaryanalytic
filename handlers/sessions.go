@@ -1,6 +1,8 @@
 package handlers
 
-import "net/http"
+import (
+	"net/http"
+)
 
 func UserSessionsHandler() http.Handler {
 	// This function will handle calls to display the user sessions
