@@ -102,6 +102,7 @@ func ReadLogFile(path string, page int) ([]RotaryLog, int, error) {
 	}
 
 	marshaledLogs, err := marshalLogs(rawLogs)
+	// TODO: Add error handling for if log fail what do ? Prune, etc?
 	if err != nil {
 		errorMessage := fmt.Errorf("error return: %w", err)
 		return nil, 0, errorMessage
