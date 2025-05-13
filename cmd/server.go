@@ -2,38 +2,32 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
-	"strconv"
+	"os"
 
-	"github.com/sain0136/go-rotaryanalytic/handlers"
-	"github.com/sain0136/go-rotaryanalytic/utils"
+	"github.com/joho/godotenv"
+	"github.com/sain0136/go-rotaryanalytic/internal/config"
+	"github.com/sain0136/go-rotaryanalytic/internal/routes"
 )
 
 func main() {
-	if err := utils.LoadEnv(); err != nil {
-		panic(err)
+	// Load .env file in development (ignore error if not present)
+	_ = godotenv.Load()
+	config.LoadConfigFromEnv()
+
+	// Setup routes
+	routes.SetupRoutes()
+
+	// Get port from env, default to 3000
+	port := os.Getenv("SERVER_PORT")
+	if port == "" {
+		port = "3000"
 	}
-	// Registering the handlers
-	http.Handle("/", handlers.HomeHandler())
-
-	http.Handle("/login", handlers.LoginPageHandler())
-
-	http.Handle("/logs", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		pageStr := r.URL.Query().Get("page")
-		page, err := strconv.Atoi(pageStr)
-		if err != nil {
-			page = 1 // Default page to look for pagination of logs
-		}
-		handlers.LogsTable(w, r, page).ServeHTTP(w, r)
-	}))
-
-	http.Handle("/getLogsPath", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		handlers.GetLogsPath(w, r).ServeHTTP(w, r)
-	}))
-
-	http.Handle("/authorize", handlers.AuthorizeHandler())
 
 	// Start server
-	fmt.Println("Listening on :3000")
-	http.ListenAndServe(":3000", nil)
+	fmt.Printf("Server starting on :%s\n", port)
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
+		log.Fatal("Server failed to start:", err)
+	}
 }
