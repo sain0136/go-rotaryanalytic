@@ -24,7 +24,7 @@ func CorsMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		// Allow credentials
 		w.Header().Set("Access-Control-Allow-Credentials", "true")
 
-		// Handle preflight requests
+		// Handle preflight requests properly
 		if r.Method == "OPTIONS" {
 			w.WriteHeader(http.StatusOK)
 			return
