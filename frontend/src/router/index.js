@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import { useAuth } from "../composables/useAuth";
-
+import Logs from "@/components/Logs.vue";
 const { isLoggedIn } = useAuth();
 
 const routes = [
@@ -15,6 +15,12 @@ const routes = [
     path: "/",
     name: "home",
     component: Home,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/logs",
+    name: "logs",
+    component: Logs,
     meta: { requiresAuth: true },
   },
 ];
