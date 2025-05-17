@@ -153,3 +153,7 @@ a,
     @apply bg-background text-foreground;
   }
 }
+
+.p-paginator {
+  border-radius: unset !important;
+}

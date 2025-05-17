@@ -3,11 +3,9 @@ import { RouterView, useRoute, useRouter } from "vue-router";
 import Toast from "primevue/toast";
 import { useAuth } from "@/composables/useAuth";
 import Menubar from "primevue/menubar";
-import { computed } from "vue";
 
 const { isLoggedIn, logout } = useAuth();
 const router = useRouter();
-const route = useRoute();
 
 const menuItems = [
   {
@@ -55,6 +53,7 @@ const menuItems = [
   left: 0;
   width: 100vw;
   z-index: 1000;
+  border-radius: 0%;
 }
 .content-container {
   margin-top: 4rem;
