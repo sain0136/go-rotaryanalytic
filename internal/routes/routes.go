@@ -13,4 +13,5 @@ func SetupRoutes() {
 	http.HandleFunc("/api/test", middleware.CorsMiddleware(middleware.AuthMiddleware(handlers.TestHandler)))
 	http.HandleFunc("/api/login", middleware.CorsMiddleware(handlers.LoginHandler))
 	http.HandleFunc("/api/logout", middleware.CorsMiddleware(handlers.LogoutHandler))
+	http.HandleFunc("/api/getlogs", middleware.CorsMiddleware(middleware.AuthMiddleware(handlers.GetLogsHandler)))
 }

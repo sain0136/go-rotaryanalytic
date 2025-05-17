@@ -11,6 +11,7 @@ var (
 	CookieSecure    bool
 	CookieSameSite  string
 	CookieDomain    string
+	LogFilePath     string
 )
 
 // LoadConfigFromEnv loads the configuration from environment variables
@@ -43,4 +44,11 @@ func LoadConfigFromEnv() {
 		val = "localhost"
 	}
 	CookieDomain = val
+
+	// Log File Path
+	val = os.Getenv("LOG_FILE_PATH")
+	if val == "" {
+		val = "C://Users//jssr2//OneDrive//Documents//Github//myrotary-projects//backend//rotary.log"
+	}
+	LogFilePath = val
 }
